@@ -4,7 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', config('app.name', 'Admin Panel'))</title>
-
+    <script>
+        (function () {
+            const theme = localStorage.getItem('admin-theme') || '{{ config('adminlte.theme.default', 'light') }}';
+            document.documentElement.setAttribute('data-bs-theme', theme);
+        })();
+    </script>
     @vite(['resources/css/admin.css', 'resources/js/admin.js'])
 </head>
 

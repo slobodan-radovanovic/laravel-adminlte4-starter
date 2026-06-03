@@ -14,6 +14,14 @@
         </ul>
 
         <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+                <button type="button"
+                        class="nav-link btn btn-link"
+                        id="admin-theme-toggle"
+                        aria-label="Toggle theme">
+                    <i class="bi bi-moon-stars" id="admin-theme-icon"></i>
+                </button>
+            </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                     <i class="bi bi-person-circle me-1"></i>
