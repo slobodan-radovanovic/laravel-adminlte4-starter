@@ -1,8 +1,8 @@
-<aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+<aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="{{ config('adminlte.sidebar.theme', 'dark') }}">
     <div class="sidebar-brand">
         <a href="{{ route('dashboard') }}" class="brand-link">
             <span class="brand-text fw-light">
-                {{ config('app.name', 'Admin Panel') }}
+                {{ config('adminlte.name', config('app.name', 'Admin Panel')) }}
             </span>
         </a>
     </div>
@@ -11,22 +11,31 @@
         <nav class="mt-2">
             <ul class="nav sidebar-menu flex-column" role="menu" data-accordion="false">
 
-                <li class="nav-item">
-                    <a href="{{ route('dashboard') }}"
-                       class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                        <i class="nav-icon bi bi-speedometer2"></i>
-                        <p>Dashboard</p>
-                    </a>
-                </li>
+                @foreach (config('adminlte.menu', []) as $item)
 
-                <li class="nav-header">EXAMPLES</li>
+                    @if (isset($item['header']))
+                        <li class="nav-header">
+                            {{ $item['header'] }}
+                        </li>
+                    @else
+                        @php
+                            $route = $item['route'] ?? null;
+                            $isActive = $route && request()->routeIs($route);
+                        @endphp
 
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon bi bi-people"></i>
-                        <p>Users</p>
-                    </a>
-                </li>
+                        <li class="nav-item">
+                            <a href="{{ $route ? route($route) : '#' }}"
+                               class="nav-link {{ $isActive ? 'active' : '' }}">
+                                @if (! empty($item['icon']))
+                                    <i class="nav-icon {{ $item['icon'] }}"></i>
+                                @endif
+
+                                <p>{{ $item['text'] }}</p>
+                            </a>
+                        </li>
+                    @endif
+
+                @endforeach
 
             </ul>
         </nav>
