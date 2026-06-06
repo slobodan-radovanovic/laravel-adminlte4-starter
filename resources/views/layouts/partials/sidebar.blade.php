@@ -1,8 +1,14 @@
 <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="{{ config('adminlte.sidebar.theme', 'dark') }}">
     <div class="sidebar-brand">
         <a href="{{ route('dashboard') }}" class="brand-link">
+            @if (config('adminlte.sidebar.brand_logo'))
+                <img src="{{ asset(config('adminlte.sidebar.brand_logo')) }}"
+                     alt="{{ config('adminlte.sidebar.brand_text', config('adminlte.name')) }}"
+                     class="brand-image opacity-75 shadow">
+            @endif
+
             <span class="brand-text fw-light">
-                {{ config('adminlte.name', config('app.name', 'Admin Panel')) }}
+                {{ config('adminlte.sidebar.brand_text', config('adminlte.name', config('app.name', 'Admin Panel'))) }}
             </span>
         </a>
     </div>

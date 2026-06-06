@@ -1,9 +1,21 @@
+@php
+    $bodyClasses = [
+        'bg-body-tertiary',
+        config('adminlte.layout.fixed', true) ? 'layout-fixed' : null,
+        config('adminlte.layout.navbar_fixed', false) ? 'layout-navbar-fixed' : null,
+        config('adminlte.layout.footer_fixed', false) ? 'layout-footer-fixed' : null,
+        'sidebar-expand-lg',
+        config('adminlte.sidebar.collapsed', false) ? 'sidebar-collapse' : null,
+    ];
+
+    $bodyClass = collect($bodyClasses)->filter()->implode(' ');
+@endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-bs-theme="light">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', config('app.name', 'Admin Panel'))</title>
+    <title>@yield('title', config('adminlte.title', config('app.name', 'Admin Panel')))</title>
     <script>
         (function () {
             const theme = localStorage.getItem('admin-theme') || '{{ config('adminlte.theme.default', 'light') }}';
@@ -13,7 +25,7 @@
     @vite(['resources/css/admin.css', 'resources/js/admin.js'])
 </head>
 
-<body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
+<body class="{{ $bodyClass }}">
 <div class="app-wrapper">
 
     @include('layouts.partials.navbar')
