@@ -19,6 +19,10 @@
 
                 @foreach (config('adminlte.menu', []) as $item)
 
+                    @if (isset($item['can']) && ! auth()->user()?->can($item['can']))
+                        @continue
+                    @endif
+
                     @if (isset($item['header']))
                         <li class="nav-header">
                             {{ $item['header'] }}
