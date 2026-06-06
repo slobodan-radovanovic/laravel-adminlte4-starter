@@ -1,6 +1,17 @@
 import 'bootstrap';
 import 'admin-lte/dist/js/adminlte.js';
 
+import DataTable from 'datatables.net-bs5';
+import $ from 'jquery';
+import select2 from 'select2';
+import Chart from 'chart.js/auto';
+
+window.$ = window.jQuery = $;
+window.DataTable = DataTable;
+window.Chart = Chart;
+
+select2($);
+
 const THEME_STORAGE_KEY = 'admin-theme';
 
 function getStoredTheme() {
