@@ -23,6 +23,7 @@
         })();
     </script>
     @vite(['resources/css/admin.css', 'resources/js/admin.js'])
+    @stack('styles')
 </head>
 
 <body class="{{ $bodyClass }}">
@@ -49,5 +50,7 @@
     @include('layouts.partials.footer')
 
 </div>
+
+@stack('scripts')
 </body>
 </html>
