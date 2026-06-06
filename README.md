@@ -1,58 +1,288 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel AdminLTE 4 Starter
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A modern Laravel starter project for building administration panels with Laravel, Blade, Bootstrap 5, AdminLTE 4, Vite and Laravel Breeze.
 
-## About Laravel
+This project is intended to be used as a clean, reusable base for future Laravel admin applications.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+* Laravel 13
+* PHP 8.4
+* MySQL
+* Blade templates
+* Bootstrap 5
+* AdminLTE 4
+* Vite
+* Laravel Breeze authentication
+* Login, registration and password reset
+* Email verification support
+* Admin dashboard
+* AdminLTE navbar, sidebar and footer
+* Config-driven sidebar menu
+* Light/Dark theme switcher
+* DataTables example
+* Select2 example
+* Chart.js example
+* Reusable Blade admin widgets
+* Spatie Laravel Permission
+* Role and permission seeders
+* Permission-aware menu items
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## What this starter does not include
 
-## Learning Laravel
+This starter intentionally does not include a full business domain, generated CRUD modules, multi-auth, Livewire, Filament or a heavy plugin architecture.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+The goal is to provide a clean and maintainable foundation, not a bloated application template.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Tech Stack
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+* Laravel 13
+* PHP 8.4
+* MySQL
+* Blade
+* Bootstrap 5
+* AdminLTE 4
+* Vite
+* Laravel Breeze
+* Spatie Laravel Permission
+* DataTables
+* Select2
+* Chart.js
 
-## Agentic Development
+## Installation
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+Clone the repository:
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone <repository-url> my-admin-project
+cd my-admin-project
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Install PHP dependencies:
 
-## Contributing
+```bash
+composer install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Install frontend dependencies:
 
-## Code of Conduct
+```bash
+npm install
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Copy the environment file:
 
-## Security Vulnerabilities
+```bash
+cp .env.example .env
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Generate the application key:
+
+```bash
+php artisan key:generate
+```
+
+Create a MySQL database and update your `.env` file:
+
+```env
+DB_DATABASE=laravel_adminlte4_starter
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+Run migrations and seeders:
+
+```bash
+php artisan migrate --seed
+```
+
+Start Vite:
+
+```bash
+npm run dev
+```
+
+Open the project in your browser and register a user.
+
+## Default Roles and Permissions
+
+The starter includes basic permissions:
+
+* `view dashboard`
+* `view users`
+
+And basic roles:
+
+* `Super Admin`
+* `Admin`
+
+The first user in the database is automatically assigned the `Super Admin` role when the database seeder runs.
+
+## Admin Menu Configuration
+
+The sidebar menu is configured in:
+
+```text
+config/adminlte.php
+```
+
+Example:
+
+```php
+'menu' => [
+    [
+        'text' => 'Dashboard',
+        'route' => 'dashboard',
+        'icon' => 'bi bi-speedometer2',
+        'can' => 'view dashboard',
+    ],
+
+    [
+        'header' => 'Management',
+    ],
+
+    [
+        'text' => 'Users',
+        'route' => 'users.index',
+        'icon' => 'bi bi-people',
+        'can' => 'view users',
+    ],
+],
+```
+
+Menu items can be protected with Laravel permissions using the `can` key.
+
+## Theme System
+
+The admin panel supports light and dark mode using Bootstrap 5 and AdminLTE 4 theme support.
+
+The selected theme is stored in the browser using `localStorage`.
+
+## Admin Layout
+
+Main admin layout:
+
+```text
+resources/views/layouts/admin.blade.php
+```
+
+Layout partials:
+
+```text
+resources/views/layouts/partials/navbar.blade.php
+resources/views/layouts/partials/sidebar.blade.php
+resources/views/layouts/partials/footer.blade.php
+```
+
+Guest/auth layout:
+
+```text
+resources/views/layouts/guest.blade.php
+```
+
+## Widgets
+
+Reusable admin widgets are located in:
+
+```text
+resources/views/components/admin
+```
+
+Available widgets:
+
+```text
+small-box
+info-box
+card
+```
+
+Example:
+
+```blade
+<x-admin.small-box
+    title="Users"
+    value="150"
+    icon="bi bi-people"
+    color="primary"
+/>
+```
+
+## Frontend Plugins
+
+The starter includes examples for:
+
+* DataTables
+* Select2
+* Chart.js
+
+The example implementation is available on the Users page.
+
+## Useful Commands
+
+Clear Laravel cache:
+
+```bash
+composer clear
+```
+
+Fresh database with seeders:
+
+```bash
+composer fresh
+```
+
+Run tests:
+
+```bash
+composer test
+```
+
+Build frontend assets:
+
+```bash
+npm run build
+```
+
+Run Vite development server:
+
+```bash
+npm run dev
+```
+
+## Creating a New Project from This Starter
+
+Recommended approach:
+
+1. Use this repository as a GitHub Template Repository.
+2. Create a new repository from the template.
+3. Clone the new project.
+4. Configure `.env`.
+5. Run migrations and seeders.
+6. Start building your application-specific modules.
+
+Alternative local approach:
+
+```bash
+git clone <starter-repository-url> my-new-project
+cd my-new-project
+rm -rf .git
+git init
+```
+
+## Roadmap
+
+Planned future improvements:
+
+* CRUD example module
+* Advanced menu items with submenus
+* Permission-aware menu headers
+* Toast notifications
+* Modal examples
+* Form component examples
+* Optional plugin lazy loading
+* More dashboard widgets
+* Example tests for admin routes
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-source and may be used as a base for Laravel admin applications.
