@@ -77,7 +77,7 @@ return [
     'footer' => [
         'enabled' => true,
         'text' => 'AdminLTE 4 Starter',
-        'version' => '0.8.0',
+        'version' => '1.0.0',
     ],
 
     /*
