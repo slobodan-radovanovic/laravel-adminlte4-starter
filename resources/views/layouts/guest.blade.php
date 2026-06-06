@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', config('adminlte.name', config('app.name', 'AdminLTE Starter')))</title>
+    <title>@yield('title', config('adminlte.title', config('app.name', 'AdminLTE Starter')))</title>
 
     <script>
         (function () {
