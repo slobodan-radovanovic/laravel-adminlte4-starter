@@ -114,6 +114,7 @@ return [
             'text' => 'Dashboard',
             'route' => 'dashboard',
             'icon' => 'bi bi-speedometer2',
+            'can' => 'view dashboard',
         ],
 
         [
@@ -124,6 +125,7 @@ return [
             'text' => 'Users',
             'route' => 'users.index',
             'icon' => 'bi bi-people',
+            'can' => 'view users',
         ],
 
     ],

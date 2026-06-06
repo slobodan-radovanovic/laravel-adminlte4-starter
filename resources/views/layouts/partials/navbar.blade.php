@@ -30,6 +30,15 @@
 
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li>
+                        <span class="dropdown-item-text text-muted small">
+                            {{ Auth::user()->getRoleNames()->implode(', ') ?: 'No role' }}
+                        </span>
+                    </li>
+
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
                         <a class="dropdown-item" href="{{ route('profile.edit') }}">
                             <i class="bi bi-person me-2"></i>
                             Profile
