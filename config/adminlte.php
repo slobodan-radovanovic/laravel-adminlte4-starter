@@ -126,6 +126,12 @@ return [
             'icon' => 'bi bi-people',
             'can' => 'view users',
         ],
+        [
+            'text' => 'Categories',
+            'route' => 'categories.index',
+            'icon' => 'bi bi-tags',
+            'can' => 'view categories',
+        ],
 
     ],
 

@@ -12,6 +12,10 @@ class RolePermissionSeeder extends Seeder
     {
         $permissions = [
             'view users',
+            'view categories',
+            'create categories',
+            'edit categories',
+            'delete categories',
         ];
 
         foreach ($permissions as $permission) {
@@ -25,6 +29,10 @@ class RolePermissionSeeder extends Seeder
 
         $admin->givePermissionTo([
             'view users',
+            'view categories',
+            'create categories',
+            'edit categories',
+            'delete categories',
         ]);
     }
 }
