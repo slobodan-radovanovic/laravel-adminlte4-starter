@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\CategoryController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,6 +21,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/users', [UserController::class, 'index'])
         ->middleware('can:view users')
         ->name('users.index');
+    Route::resource('categories', CategoryController::class)
+        ->except(['show']);
 });
 
 require __DIR__.'/auth.php';

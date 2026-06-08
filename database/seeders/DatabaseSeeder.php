@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
 {
     $this->call([
         RolePermissionSeeder::class,
+        CategorySeeder::class,
     ]);
 
     $user = User::query()->first();
