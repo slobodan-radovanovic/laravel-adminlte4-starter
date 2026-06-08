@@ -114,7 +114,6 @@ return [
             'text' => 'Dashboard',
             'route' => 'dashboard',
             'icon' => 'bi bi-speedometer2',
-            'can' => 'view dashboard',
         ],
 
         [
