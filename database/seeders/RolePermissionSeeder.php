@@ -11,7 +11,6 @@ class RolePermissionSeeder extends Seeder
     public function run(): void
     {
         $permissions = [
-            'view dashboard',
             'view users',
         ];
 
@@ -25,7 +24,6 @@ class RolePermissionSeeder extends Seeder
         $superAdmin->givePermissionTo(Permission::all());
 
         $admin->givePermissionTo([
-            'view dashboard',
             'view users',
         ]);
     }
