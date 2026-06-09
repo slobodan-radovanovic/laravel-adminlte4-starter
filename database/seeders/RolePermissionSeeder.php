@@ -12,6 +12,9 @@ class RolePermissionSeeder extends Seeder
     {
         $permissions = [
             'view users',
+            'create users',
+            'edit users',
+            'delete users',
 
             'view categories',
             'create categories',
@@ -35,6 +38,9 @@ class RolePermissionSeeder extends Seeder
 
         $admin->givePermissionTo([
             'view users',
+            'create users',
+            'edit users',
+            'delete users',
 
             'view categories',
             'create categories',
