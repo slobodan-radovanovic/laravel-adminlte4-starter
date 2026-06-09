@@ -132,6 +132,12 @@ return [
             'icon' => 'bi bi-tags',
             'can' => 'view categories',
         ],
+        [
+            'text' => 'Roles',
+            'route' => 'roles.index',
+            'icon' => 'bi bi-shield-lock',
+            'can' => 'view roles',
+        ],
 
     ],
 
