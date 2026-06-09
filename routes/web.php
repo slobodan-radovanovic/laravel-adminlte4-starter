@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\RoleController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -22,6 +23,8 @@ Route::middleware('auth')->group(function () {
         ->middleware('can:view users')
         ->name('users.index');
     Route::resource('categories', CategoryController::class)
+        ->except(['show']);
+    Route::resource('roles', RoleController::class)
         ->except(['show']);
 });
 
