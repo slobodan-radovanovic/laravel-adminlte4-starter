@@ -14,11 +14,5 @@ class DatabaseSeeder extends Seeder
         RolePermissionSeeder::class,
         CategorySeeder::class,
     ]);
-
-    $user = User::query()->first();
-
-    if ($user) {
-        $user->assignRole('Super Admin');
-    }
 }
 }
