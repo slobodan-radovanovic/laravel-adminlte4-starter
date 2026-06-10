@@ -86,21 +86,39 @@ return [
     |--------------------------------------------------------------------------
     */
 
-        'plugins' => [
-
-            'datatables' => [
-                'enabled' => true,
-            ],
-
-            'select2' => [
-                'enabled' => true,
-            ],
-
-            'chartjs' => [
-                'enabled' => true,
-            ],
-
+    'plugins' => [
+        'datatables' => [
+            'enabled' => false,
         ],
+
+        'select2' => [
+            'enabled' => false,
+        ],
+
+        'chartjs' => [
+            'enabled' => false,
+        ],
+
+        'flatpickr' => [
+            'enabled' => false,
+        ],
+
+        'sweetalert2' => [
+            'enabled' => false,
+        ],
+
+        'inputmask' => [
+            'enabled' => false,
+        ],
+
+        'sortablejs' => [
+            'enabled' => false,
+        ],
+
+        'dropzone' => [
+            'enabled' => false,
+        ],
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -160,6 +178,14 @@ return [
             'icon' => 'bi bi-tags',
             'can' => 'view categories',
             'active' => ['categories.*'],
+        ],
+
+        [
+            'text' => 'Plugins',
+            'route' => 'examples.plugins',
+            'icon' => 'bi bi-puzzle',
+            'can' => 'view users',
+            'active' => ['examples.plugins'],
         ],
 
         [

@@ -73,7 +73,7 @@ npm install
 Copy the environment file:
 
 ```bash
-cp .env.example .env
+cp .env.examples .env
 ```
 
 Generate the application key:

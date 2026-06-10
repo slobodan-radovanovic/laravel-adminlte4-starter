@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\PluginExampleController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,6 +29,9 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('roles', RoleController::class)
         ->except(['show']);
+
+    Route::get('/examples/plugins', [PluginExampleController::class, 'index'])
+        ->name('examples.plugins');
 });
 
 require __DIR__.'/auth.php';
