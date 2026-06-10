@@ -1,16 +1,33 @@
 import 'bootstrap';
 import 'admin-lte/dist/js/adminlte.js';
 
-import DataTable from 'datatables.net-bs5';
 import $ from 'jquery';
+import DataTable from 'datatables.net-bs5';
 import select2 from 'select2';
 import Chart from 'chart.js/auto';
+import flatpickr from 'flatpickr';
+import Swal from 'sweetalert2';
+import Inputmask from 'inputmask/dist/inputmask.es6.js';
+import Sortable from 'sortablejs';
+import Dropzone from 'dropzone';
 
 window.$ = window.jQuery = $;
+
 window.DataTable = DataTable;
 window.Chart = Chart;
+window.flatpickr = flatpickr;
+window.Swal = Swal;
+window.Inputmask = Inputmask;
+window.Sortable = Sortable;
+window.Dropzone = Dropzone;
+
+window.adminPluginEnabled = function (plugin) {
+  return Array.isArray(window.AdminPlugins) && window.AdminPlugins.includes(plugin);
+};
 
 select2($);
+
+Dropzone.autoDiscover = false;
 
 const THEME_STORAGE_KEY = 'admin-theme';
 

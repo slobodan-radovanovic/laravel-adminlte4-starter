@@ -129,10 +129,16 @@
     </x-admin.card>
 @endsection
 
+@push('plugins')
+    datatables
+@endpush
+
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            new DataTable('#roles-table');
+            if (window.adminPluginEnabled('datatables')) {
+                new DataTable('#roles-table');
+            }
         });
     </script>
 @endpush

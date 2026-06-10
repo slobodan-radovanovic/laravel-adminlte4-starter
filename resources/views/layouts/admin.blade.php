@@ -53,6 +53,7 @@
 
 </div>
 
+@include('layouts.partials.plugins')
 @stack('scripts')
 </body>
 </html>

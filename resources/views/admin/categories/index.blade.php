@@ -126,10 +126,16 @@
     </x-admin.card>
 @endsection
 
+@push('plugins')
+datatables
+@endpush
+
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            new DataTable('#categories-table');
+            if (window.adminPluginEnabled('datatables')) {
+                new DataTable('#categories-table');
+            }
         });
     </script>
 @endpush

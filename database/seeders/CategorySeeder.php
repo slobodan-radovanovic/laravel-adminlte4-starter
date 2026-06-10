@@ -13,19 +13,19 @@ class CategorySeeder extends Seeder
             [
                 'name' => 'General',
                 'slug' => 'general',
-                'description' => 'General category example.',
+                'description' => 'General category examples.',
                 'is_active' => true,
             ],
             [
                 'name' => 'News',
                 'slug' => 'news',
-                'description' => 'News category example.',
+                'description' => 'News category examples.',
                 'is_active' => true,
             ],
             [
                 'name' => 'Archived',
                 'slug' => 'archived',
-                'description' => 'Inactive category example.',
+                'description' => 'Inactive category examples.',
                 'is_active' => false,
             ],
         ];
