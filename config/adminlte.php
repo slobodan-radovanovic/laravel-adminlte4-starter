@@ -109,36 +109,69 @@ return [
     */
 
     'menu' => [
+        [
+            'text' => 'MAIN NAVIGATION',
+            'header' => true,
+        ],
 
         [
             'text' => 'Dashboard',
             'route' => 'dashboard',
             'icon' => 'bi bi-speedometer2',
+            'active' => ['dashboard'],
         ],
 
         [
-            'header' => 'Management',
+            'text' => 'ACCESS CONTROL',
+            'header' => true,
         ],
 
         [
-            'text' => 'Users',
-            'route' => 'users.index',
-            'icon' => 'bi bi-people',
-            'can' => 'view users',
+            'text' => 'Access Control',
+            'icon' => 'bi bi-shield-lock',
+            'can_any' => ['view users', 'view roles'],
+            'active' => ['users.*', 'roles.*'],
+            'submenu' => [
+                [
+                    'text' => 'Users',
+                    'route' => 'users.index',
+                    'icon' => 'bi bi-people',
+                    'can' => 'view users',
+                    'active' => ['users.*'],
+                ],
+                [
+                    'text' => 'Roles',
+                    'route' => 'roles.index',
+                    'icon' => 'bi bi-shield-lock',
+                    'can' => 'view roles',
+                    'active' => ['roles.*'],
+                ],
+            ],
         ],
+
+        [
+            'text' => 'EXAMPLES',
+            'header' => true,
+        ],
+
         [
             'text' => 'Categories',
             'route' => 'categories.index',
             'icon' => 'bi bi-tags',
             'can' => 'view categories',
-        ],
-        [
-            'text' => 'Roles',
-            'route' => 'roles.index',
-            'icon' => 'bi bi-shield-lock',
-            'can' => 'view roles',
+            'active' => ['categories.*'],
         ],
 
+        [
+            'text' => 'AdminLTE Docs',
+            'url' => 'https://adminlte.io/docs/4.0/',
+            'icon' => 'bi bi-book',
+            'target' => '_blank',
+            'badge' => [
+                'text' => 'Docs',
+                'class' => 'text-bg-info',
+            ],
+        ],
     ],
 
 ];
