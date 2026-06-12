@@ -12,6 +12,13 @@ class StoreUserRequest extends FormRequest
         return $this->user()?->can('create users') ?? false;
     }
 
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'email_verified' => $this->boolean('email_verified'),
+        ]);
+    }
+
     public function rules(): array
     {
         return [

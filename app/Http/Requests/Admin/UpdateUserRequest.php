@@ -12,6 +12,13 @@ class UpdateUserRequest extends FormRequest
         return $this->user()?->can('edit users') ?? false;
     }
 
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'email_verified' => $this->boolean('email_verified'),
+        ]);
+    }
+
     public function rules(): array
     {
         $user = $this->route('user');
