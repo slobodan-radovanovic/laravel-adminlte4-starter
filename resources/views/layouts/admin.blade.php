@@ -42,7 +42,7 @@
 
         <div class="app-content">
             <div class="container-fluid">
-                @include('layouts.partials.alerts')
+                {{-- @include('layouts.partials.alerts') --}}
 
                 @yield('content')
             </div>
@@ -52,7 +52,7 @@
     @include('layouts.partials.footer')
 
 </div>
-
+@include('layouts.partials.toasts')
 @include('layouts.partials.plugins')
 @stack('scripts')
 </body>

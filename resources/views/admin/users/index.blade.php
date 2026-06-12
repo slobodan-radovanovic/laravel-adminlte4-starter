@@ -35,7 +35,15 @@
                 </a>
             @endcan
         </div>
-
+        @if ($users->isEmpty())
+            <x-admin.empty-state
+                icon="bi bi-people"
+                title="No users found"
+                message="There are no users to display yet."
+                :action-url="auth()->user()?->can('create users') ? route('users.create') : null"
+                action-text="Create User"
+            />
+        @else
         <table id="users-table" class="table table-bordered table-striped align-middle">
             <thead>
             <tr>
@@ -85,63 +93,24 @@
                             </a>
                         @endcan
 
-                        @can('delete users')
-                            @if (! $user->is(auth()->user()))
-                                <button type="button"
-                                        class="btn btn-sm btn-outline-danger"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#delete-user-{{ $user->id }}">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-
-                                <div class="modal fade"
-                                     id="delete-user-{{ $user->id }}"
-                                     tabindex="-1"
-                                     aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <form method="POST"
-                                              action="{{ route('users.destroy', $user) }}"
-                                              class="modal-content text-start">
-                                            @csrf
-                                            @method('DELETE')
-
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Delete User</h5>
-
-                                                <button type="button"
-                                                        class="btn-close"
-                                                        data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                            </div>
-
-                                            <div class="modal-body">
-                                                Are you sure you want to delete user
-                                                <strong>{{ $user->name }}</strong>?
-                                            </div>
-
-                                            <div class="modal-footer">
-                                                <button type="button"
-                                                        class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">
-                                                    Cancel
-                                                </button>
-
-                                                <button type="submit" class="btn btn-danger">
-                                                    Delete
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            @else
-                                <span class="text-muted small">Current user</span>
-                            @endif
-                        @endcan
+                            @can('delete users')
+                                @if (! $user->is(auth()->user()))
+                                    <x-admin.confirm-delete
+                                        id="delete-user-{{ $user->id }}"
+                                        :action="route('users.destroy', $user)"
+                                        title="Delete User"
+                                        message="Are you sure you want to delete user {{ $user->name }}?"
+                                    />
+                                @else
+                                    <span class="text-muted small">Current user</span>
+                                @endif
+                            @endcan
                     </td>
                 </tr>
             @endforeach
             </tbody>
         </table>
+        @endif
     </x-admin.card>
 @endsection
 

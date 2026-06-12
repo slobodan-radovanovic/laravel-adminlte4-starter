@@ -35,7 +35,15 @@
                 </a>
             @endcan
         </div>
-
+        @if ($categories->isEmpty())
+            <x-admin.empty-state
+                icon="bi bi-tags"
+                title="No categories found"
+                message="There are no categories to display yet."
+                :action-url="auth()->user()?->can('create categories') ? route('categories.create') : null"
+                action-text="Create Category"
+            />
+        @else
         <table id="categories-table" class="table table-bordered table-striped align-middle">
             <thead>
             <tr>
@@ -123,6 +131,7 @@
             @endforeach
             </tbody>
         </table>
+        @endif
     </x-admin.card>
 @endsection
 

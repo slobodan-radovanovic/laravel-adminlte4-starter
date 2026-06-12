@@ -1,5 +1,7 @@
-import 'bootstrap';
+import * as bootstrap from 'bootstrap';
 import 'admin-lte/dist/js/adminlte.js';
+
+window.bootstrap = bootstrap;
 
 import $ from 'jquery';
 import DataTable from 'datatables.net-bs5';
@@ -12,7 +14,6 @@ import Sortable from 'sortablejs';
 import Dropzone from 'dropzone';
 
 window.$ = window.jQuery = $;
-
 window.DataTable = DataTable;
 window.Chart = Chart;
 window.flatpickr = flatpickr;
@@ -84,4 +85,40 @@ function initThemeToggle() {
 
 document.addEventListener('DOMContentLoaded', () => {
     initThemeToggle();
+});
+
+/*document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.toast').forEach(function (toastElement) {
+    const toast = new window.bootstrap.Toast(toastElement);
+
+    toast.show();
+  });
+});*/
+
+document.addEventListener('DOMContentLoaded', function () {
+  const flash = document.querySelector('[data-admin-flash]');
+
+  if (! flash) {
+    return;
+  }
+
+  const close = function () {
+    flash.remove();
+  };
+
+  flash.querySelector('[data-admin-flash-close]')?.addEventListener('click', close);
+
+  flash.addEventListener('click', function (event) {
+    if (event.target === flash) {
+      close();
+    }
+  });
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+      close();
+    }
+  });
+
+  setTimeout(close, 3000);
 });
