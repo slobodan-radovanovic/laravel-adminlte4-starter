@@ -8,3 +8,61 @@
 
 @import 'flatpickr/dist/flatpickr.css';
 @import 'dropzone/dist/dropzone.css';
+
+.admin-flash-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1080;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.admin-flash-card {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  background: var(--bs-body-bg);
+  color: var(--bs-body-color);
+  border-radius: 1rem;
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.2);
+  animation: admin-flash-in 160ms ease-out;
+}
+
+.admin-flash-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.admin-flash-icon {
+  margin-bottom: 1rem;
+  font-size: 4rem;
+  line-height: 1;
+}
+
+.admin-flash-title {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.admin-flash-message {
+  margin-bottom: 0;
+  color: var(--bs-secondary-color);
+}
+
+@keyframes admin-flash-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

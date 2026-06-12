@@ -35,7 +35,15 @@
                 </a>
             @endcan
         </div>
-
+        @if ($roles->isEmpty())
+            <x-admin.empty-state
+                icon="bi bi-shield-lock"
+                title="No roles found"
+                message="There are no roles to display yet."
+                :action-url="auth()->user()?->can('create roles') ? route('roles.create') : null"
+                action-text="Create Role"
+            />
+        @else
         <table id="roles-table" class="table table-bordered table-striped align-middle">
             <thead>
             <tr>
@@ -69,63 +77,24 @@
                             </a>
                         @endcan
 
-                        @can('delete roles')
-                            @if ($role->name !== 'Super Admin')
-                                <button type="button"
-                                        class="btn btn-sm btn-outline-danger"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#delete-role-{{ $role->id }}">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-
-                                <div class="modal fade"
-                                     id="delete-role-{{ $role->id }}"
-                                     tabindex="-1"
-                                     aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <form method="POST"
-                                              action="{{ route('roles.destroy', $role) }}"
-                                              class="modal-content text-start">
-                                            @csrf
-                                            @method('DELETE')
-
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Delete Role</h5>
-
-                                                <button type="button"
-                                                        class="btn-close"
-                                                        data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                            </div>
-
-                                            <div class="modal-body">
-                                                Are you sure you want to delete role
-                                                <strong>{{ $role->name }}</strong>?
-                                            </div>
-
-                                            <div class="modal-footer">
-                                                <button type="button"
-                                                        class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">
-                                                    Cancel
-                                                </button>
-
-                                                <button type="submit" class="btn btn-danger">
-                                                    Delete
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            @else
-                                <span class="text-muted small">Protected</span>
-                            @endif
-                        @endcan
+                            @can('delete roles')
+                                @if ($role->name !== 'Super Admin')
+                                    <x-admin.confirm-delete
+                                        id="delete-role-{{ $role->id }}"
+                                        :action="route('roles.destroy', $role)"
+                                        title="Delete Role"
+                                        message="Are you sure you want to delete role {{ $role->name }}?"
+                                    />
+                                @else
+                                    <span class="text-muted small">Protected</span>
+                                @endif
+                            @endcan
                     </td>
                 </tr>
             @endforeach
             </tbody>
         </table>
+        @endif
     </x-admin.card>
 @endsection
 
