@@ -42,7 +42,7 @@ class UserController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'email_verified_at' => $request->boolean('email_verified') ? now() : null,
+            'email_verified_at' => ($validated['email_verified'] ?? false) ? now() : null,
         ]);
 
         $user->syncRoles($validated['roles'] ?? []);
@@ -84,7 +84,7 @@ class UserController extends Controller
         $data = [
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'email_verified_at' => $request->boolean('email_verified') ? ($user->email_verified_at ?? now()) : null,
+            'email_verified_at' => ($validated['email_verified'] ?? false) ? ($user->email_verified_at ?? now()) : null,
         ];
 
         if (! empty($validated['password'])) {
