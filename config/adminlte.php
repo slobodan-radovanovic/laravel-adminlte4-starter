@@ -200,4 +200,10 @@ return [
         ],
     ],
 
+    'feedback' => [
+        'type' => 'popup', // popup, toast, alert
+        'auto_close' => true,
+        'delay' => 3000,
+    ],
+
 ];

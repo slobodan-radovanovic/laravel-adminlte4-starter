@@ -6,8 +6,8 @@
 @import "select2/dist/css/select2.css";
 @import "select2-bootstrap-5-theme/dist/select2-bootstrap-5-theme.css";
 
-@import 'flatpickr/dist/flatpickr.css';
-@import 'dropzone/dist/dropzone.css';
+@import url("../../node_modules/flatpickr/dist/flatpickr.css");
+@import url("../../node_modules/dropzone/dist/dropzone.css");
 
 .admin-flash-overlay {
   position: fixed;
@@ -66,3 +66,5 @@
     transform: translateY(0) scale(1);
   }
 }
+
+

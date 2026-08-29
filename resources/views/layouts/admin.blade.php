@@ -52,7 +52,7 @@
     @include('layouts.partials.footer')
 
 </div>
-@include('layouts.partials.toasts')
+@include('layouts.partials.flash')
 @include('layouts.partials.plugins')
 @stack('scripts')
 </body>

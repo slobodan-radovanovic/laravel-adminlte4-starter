@@ -40,7 +40,9 @@
 @endphp
 
 @if ($flash)
-    <div class="admin-flash-overlay" data-admin-flash>
+    <div class="admin-flash-overlay"
+         data-admin-flash
+         data-admin-flash-delay="{{ config('adminlte.feedback.delay', 3000) }}">
         <div class="admin-flash-card">
             <button type="button"
                     class="btn-close admin-flash-close"
