@@ -13,6 +13,7 @@ import Inputmask from 'inputmask/dist/inputmask.es6.js';
 import Sortable from 'sortablejs';
 import Dropzone from 'dropzone';
 
+
 window.$ = window.jQuery = $;
 window.DataTable = DataTable;
 window.Chart = Chart;
@@ -120,5 +121,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  setTimeout(close, 3000);
+  const delay = Number(flash.dataset.adminFlashDelay || 3000);
+
+  if (delay > 0) {
+    setTimeout(close, delay);
+  }
 });
