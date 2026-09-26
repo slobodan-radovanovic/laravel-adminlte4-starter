@@ -6,18 +6,10 @@ This project follows a simple versioned release history for the Laravel AdminLTE
 
 ---
 
-## v2.0.1 - Security Fixes
-
-### Security
-
-- Super Admin users now pass every permission check through `Gate::before`.
-- Only Super Admin users can assign the Super Admin role or edit and delete Super Admin users.
-- The Super Admin role can no longer be renamed or edited.
-- Admin pages now require a verified email address (`User` implements `MustVerifyEmail`).
+## v2.1.0 - Cleanup and Performance
 
 ### Added
 
-- `ADMINLTE_REGISTRATION_ENABLED` option to turn off public registration.
 - `window.adminReady()` helper for page scripts that use plugins.
 - GitHub Actions CI running Pint, the frontend build and tests on PHP 8.3 and 8.4.
 - Feature tests for the Categories CRUD.
@@ -34,6 +26,21 @@ This project follows a simple versioned release history for the Laravel AdminLTE
 
 - Unused Breeze Tailwind layout, navigation, welcome page and components.
 - Tailwind CSS, PostCSS, Autoprefixer and Alpine.js.
+
+---
+
+## v2.0.1 - Security Fixes
+
+### Security
+
+- Super Admin users now pass every permission check through `Gate::before`.
+- Only Super Admin users can assign the Super Admin role or edit and delete Super Admin users.
+- The Super Admin role can no longer be renamed or edited.
+- Admin pages now require a verified email address (`User` implements `MustVerifyEmail`).
+
+### Added
+
+- `ADMINLTE_REGISTRATION_ENABLED` option to turn off public registration.
 
 ---
 
