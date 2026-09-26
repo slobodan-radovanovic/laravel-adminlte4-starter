@@ -27,7 +27,7 @@ It provides authentication, a Bootstrap/AdminLTE layout, role and permission man
 - Categories CRUD example
 - Reusable admin form components
 - Reusable feedback components
-- Centered flash popup for success/error/info messages
+- Centered flash popup for success, error, warning and info messages
 - Admin plugin system
 - Plugin examples page
 - Feature tests for core starter behavior
@@ -38,7 +38,7 @@ It provides authentication, a Bootstrap/AdminLTE layout, role and permission man
 
 - Laravel 13
 - PHP 8.4
-- MySQL
+- MySQL or MariaDB
 - Blade
 - Bootstrap 5
 - AdminLTE 4
@@ -91,162 +91,201 @@ Clone the repository:
 ```bash
 git clone https://github.com/slobodan-radovanovic/laravel-adminlte4-starter.git
 cd laravel-adminlte4-starter
+```
 
 Install PHP dependencies:
 
+```bash
 composer install
+```
 
 Install frontend dependencies:
 
+```bash
 npm install
+```
 
 Create the environment file:
 
+```bash
 cp .env.example .env
+```
 
 Generate the application key:
 
+```bash
 php artisan key:generate
+```
 
-Configure your database in .env, then run migrations and seeders:
+Configure your database in `.env`, then run migrations and seeders:
 
+```bash
 php artisan migrate --seed
+```
 
 Build frontend assets:
 
+```bash
 npm run build
+```
 
 For local development:
 
+```bash
 npm run dev
-Creating the First Super Admin User
+```
+
+---
+
+## Creating the First Super Admin User
 
 This starter does not include default admin credentials.
 
 After running migrations and seeders, create the first Super Admin user manually:
 
+```bash
 php artisan admin:create-user
+```
 
 The command will ask for:
 
-name
-email
-password
+- name
+- email
+- password
 
 The created user will be assigned the Super Admin role.
 
-Authentication
+---
+
+## Authentication
 
 Laravel Breeze Blade is used as the authentication foundation.
 
 Included authentication features:
 
-login
-registration
-forgot password
-reset password
-email verification
-password confirmation
-profile update
-password update
-account deletion
+- login
+- registration
+- forgot password
+- reset password
+- email verification
+- password confirmation
+- profile update
+- password update
+- account deletion
 
 The Breeze views are adapted to match the AdminLTE/Bootstrap UI.
 
-Roles and Permissions
+---
+
+## Roles and Permissions
 
 This starter uses Spatie Laravel Permission.
 
 Default roles:
 
-Super Admin
-Admin
+- Super Admin
+- Admin
 
 Example permissions include:
 
-view users
-create users
-edit users
-delete users
-view roles
-create roles
-edit roles
-delete roles
-view categories
-create categories
-edit categories
-delete categories
+- view users
+- create users
+- edit users
+- delete users
+- view roles
+- create roles
+- edit roles
+- delete roles
+- view categories
+- create categories
+- edit categories
+- delete categories
 
 The Super Admin role receives all permissions.
 
 Safety rules included:
 
-the Super Admin role cannot be deleted
-the last Super Admin user cannot be deleted
-the last Super Admin role cannot be removed from the last Super Admin user
-a user cannot delete their own account
-Admin Modules
-Users
+- the Super Admin role cannot be deleted
+- the last Super Admin user cannot be deleted
+- the last Super Admin role cannot be removed from the last Super Admin user
+- a user cannot delete their own account
+
+---
+
+## Admin Modules
+
+### Users
 
 The Users module provides a full CRUD interface.
 
 Super Admin users can:
 
-list users
-create users
-edit users
-update passwords
-mark email as verified/unverified
-assign roles
-delete users
-Roles
+- list users
+- create users
+- edit users
+- update passwords
+- mark email as verified or unverified
+- assign roles
+- delete users
+
+### Roles
 
 The Roles module provides role management with permission assignment.
 
 It also demonstrates the reusable admin form components.
 
-Categories
+### Categories
 
 The Categories module is a simple CRUD example.
 
 It intentionally stays closer to plain Blade so developers can compare a manual CRUD approach with the reusable component approach used in the Roles module.
 
-AdminLTE Configuration
+---
+
+## AdminLTE Configuration
 
 The main AdminLTE configuration file is:
 
+```text
 config/adminlte.php
+```
 
 It contains configuration for:
 
-application name
-layout options
-navbar
-sidebar
-footer
-menu
-plugins
-feedback behavior
-Sidebar Menu
+- application name
+- layout options
+- navbar
+- sidebar
+- footer
+- menu
+- plugins
+- feedback behavior
+
+---
+
+## Sidebar Menu
 
 The sidebar menu is configured in:
 
+```text
 config/adminlte.php
+```
 
 Supported menu features:
 
-headers
-icons
-routes
-external URLs
-badges
-submenu items
-active route patterns
-permission checks with can
-permission checks with can_any
+- headers
+- icons
+- routes
+- external URLs
+- badges
+- submenu items
+- active route patterns
+- permission checks with `can`
+- permission checks with `can_any`
 
 Example:
 
+```php
 [
     'text' => 'Access Control',
     'icon' => 'bi bi-shield-lock',
@@ -269,22 +308,29 @@ Example:
         ],
     ],
 ],
-Admin Form Components
+```
+
+---
+
+## Admin Form Components
 
 Reusable admin form components are located in:
 
+```text
 resources/views/components/admin/form
+```
 
 Included components:
 
-input
-textarea
-checkbox
-select
-actions
+- input
+- textarea
+- checkbox
+- select
+- actions
 
 Example:
 
+```blade
 <x-admin.form.input
     name="name"
     label="Name"
@@ -296,42 +342,58 @@ Example:
     submit="Save"
     :cancel-url="route('roles.index')"
 />
-Feedback Popup
+```
+
+---
+
+## Feedback Popup
 
 Flash messages are displayed as a centered popup.
 
 Supported message types:
 
-success
-error
-warning
-info
+- success
+- error
+- warning
+- info
 
 Example controller usage:
 
+```php
 return redirect()
     ->route('roles.index')
     ->with('success', 'Role created successfully.');
+```
 
 Feedback configuration is available in:
 
+```text
 config/adminlte.php
+```
 
 Example:
 
+```php
 'feedback' => [
     'type' => 'popup',
     'auto_close' => true,
     'delay' => 3000,
 ],
-Plugin System
+```
+
+---
+
+## Plugin System
 
 Plugins can be enabled globally from:
 
+```text
 config/adminlte.php
+```
 
 Example:
 
+```php
 'plugins' => [
     'datatables' => [
         'enabled' => false,
@@ -340,15 +402,19 @@ Example:
         'enabled' => false,
     ],
 ],
+```
 
 Plugins can also be activated per page using a Blade stack:
 
+```blade
 @push('plugins')
 datatables
 @endpush
+```
 
 Then check if the plugin is active:
 
+```blade
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -358,57 +424,118 @@ Then check if the plugin is active:
     });
 </script>
 @endpush
+```
 
 A plugin examples page is included at:
 
+```text
 /examples/plugins
-Testing
+```
+
+---
+
+## Updating Existing Projects from This Starter
+
+Template repositories do not automatically update projects created from them.
+
+For long-term projects, you can add this starter as an additional remote:
+
+```bash
+git remote add starter git@github.com:slobodan-radovanovic/laravel-adminlte4-starter.git
+```
+
+When you want to pull starter updates into an existing project:
+
+```bash
+git checkout main
+git checkout -b update-from-starter
+git fetch starter
+git merge starter/main
+```
+
+Then review conflicts, test the application and merge the update branch when ready.
+
+Useful checks after updating:
+
+```bash
+composer install
+npm install
+php artisan migrate
+php artisan test
+npm run build
+```
+
+For safer upgrades, copy only the specific files you need from the starter and commit them manually.
+
+---
+
+## Testing
 
 Run tests:
 
+```bash
 php artisan test
+```
 
 Run frontend build:
 
+```bash
 npm run build
+```
 
 This starter includes feature tests for:
 
-dashboard access
-protected admin routes
-permissions
-users management
-roles management
-categories access
-first admin user command
+- dashboard access
+- protected admin routes
+- permissions
+- users management
+- roles management
+- categories access
+- first admin user command
 
-The test database is configured in phpunit.xml.
+The test database is configured in `phpunit.xml`.
 
-Useful Commands
+---
+
+## Useful Commands
 
 Clear cache:
 
+```bash
 php artisan optimize:clear
+```
 
 Fresh database with seeders:
 
+```bash
 php artisan migrate:fresh --seed
+```
 
 Create first admin user:
 
+```bash
 php artisan admin:create-user
+```
 
 Run tests:
 
+```bash
 php artisan test
+```
 
 Build assets:
 
+```bash
 npm run build
-Project Structure
+```
+
+---
+
+## Project Structure
 
 Important files and folders:
 
+```text
 app/Console/Commands/CreateAdminUserCommand.php
 app/Http/Controllers/Admin
 app/Http/Requests/Admin
@@ -420,29 +547,40 @@ resources/views/layouts/partials
 resources/views/components/admin
 resources/views/admin
 tests/Feature
-Using as a Starter Template
+```
+
+---
+
+## Using as a Starter Template
 
 This project is intended to be used as a starting point for Laravel admin applications.
 
 Recommended workflow:
 
-Create a new repository from this starter.
-Configure .env.
-Run migrations and seeders.
-Create the first Super Admin user.
-Replace or extend the example modules.
-Adjust config/adminlte.php for your application.
-Add your own business modules.
-Roadmap
+1. Create a new repository from this starter.
+2. Configure `.env`.
+3. Run migrations and seeders.
+4. Create the first Super Admin user.
+5. Replace or extend the example modules.
+6. Adjust `config/adminlte.php` for your application.
+7. Add your own business modules.
+
+---
+
+## Roadmap
 
 Possible future improvements:
 
-optional feedback type selection: popup, toast or inline alert
-dynamic plugin imports
-more AdminLTE components
-optional screenshots
-additional tests
-reusable CRUD generator patterns
-License
+- optional feedback type selection: popup, toast or inline alert
+- dynamic plugin imports
+- more AdminLTE components
+- optional screenshots
+- additional tests
+- reusable CRUD generator patterns
+- optional Composer package extraction for shared admin core
+
+---
+
+## License
 
 This project is open-sourced software licensed under the MIT license.

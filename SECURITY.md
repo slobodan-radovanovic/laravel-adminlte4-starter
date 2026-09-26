@@ -2,50 +2,86 @@
 
 ## Supported Versions
 
-This project is a starter template. Security fixes are generally applied to the latest released version.
+This project is a starter kit. Security fixes are expected to target the latest stable release.
 
 | Version | Supported |
-| ------- | --------- |
-| Latest  | Yes       |
+| --- | --- |
+| Latest release | Yes |
+| Older releases | Best effort |
 
 ---
 
 ## Reporting a Vulnerability
 
-If you discover a security issue, please do not open a public issue with sensitive details.
-
-Instead, report it privately through GitHub security advisories if available, or contact the maintainer through the repository profile.
+If you discover a security vulnerability, please open a private report through GitHub Security Advisories when available, or contact the maintainer directly through the repository owner profile.
 
 Please include:
 
 - a clear description of the issue
+- affected files or features
 - steps to reproduce
-- affected files or modules
 - possible impact
-- suggested fix, if known
+- suggested fix, if available
+
+Do not publicly disclose a vulnerability before it has been reviewed.
 
 ---
 
-## Default Credentials
+## Security Notes
 
-This starter does not include default admin credentials.
+This starter intentionally avoids default admin credentials.
 
-The first Super Admin user must be created manually using:
+The first Super Admin user must be created manually with:
 
 ```bash
 php artisan admin:create-user
-Security Notes
+```
 
-This starter includes basic safeguards:
+Included safety rules:
 
-no default admin user
-no default admin password
-protected admin routes
-permission-based menu visibility
-protected Super Admin role
-protection against deleting the current authenticated user
-protection against deleting the last Super Admin user
+- the Super Admin role cannot be deleted
+- the last Super Admin user cannot be deleted
+- the last Super Admin role cannot be removed from the last Super Admin user
+- a user cannot delete their own account
 
-These safeguards are not a replacement for a full security review in production applications.
+---
 
+## Before Using in Production
 
+Before using this starter in a production project, review and configure:
+
+- `.env` values
+- application key
+- database credentials
+- mail configuration
+- queue configuration
+- cache/session drivers
+- HTTPS configuration
+- file permissions
+- web server configuration
+- backup strategy
+- user registration policy
+- role and permission assignments
+
+Also run:
+
+```bash
+composer audit
+php artisan test
+npm run build
+```
+
+---
+
+## Dependency Security
+
+Keep PHP and JavaScript dependencies updated.
+
+Recommended checks:
+
+```bash
+composer audit
+npm audit
+```
+
+Apply dependency updates carefully and test the application after every update.
