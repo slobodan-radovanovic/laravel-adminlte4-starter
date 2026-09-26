@@ -11,7 +11,7 @@ It provides authentication, a Bootstrap/AdminLTE layout, role and permission man
 ## Features
 
 - Laravel 13 application structure
-- PHP 8.4 ready
+- PHP 8.3+ (tested on PHP 8.3 and 8.4)
 - AdminLTE 4 manually integrated through npm and Vite
 - Bootstrap 5 based admin UI
 - Laravel Breeze Blade authentication
@@ -37,7 +37,7 @@ It provides authentication, a Bootstrap/AdminLTE layout, role and permission man
 ## Tech Stack
 
 - Laravel 13
-- PHP 8.4
+- PHP 8.3 or newer
 - MySQL or MariaDB
 - Blade
 - Bootstrap 5
@@ -77,7 +77,7 @@ AdminLTE is integrated manually so the project structure stays transparent and e
 
 ## Requirements
 
-- PHP 8.4 or newer
+- PHP 8.3 or newer
 - Composer
 - Node.js and npm
 - MySQL or MariaDB

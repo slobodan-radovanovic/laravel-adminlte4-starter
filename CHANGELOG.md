@@ -18,15 +18,34 @@ This project follows a simple versioned release history for the Laravel AdminLTE
 ### Added
 
 - `ADMINLTE_REGISTRATION_ENABLED` option to turn off public registration.
+- `window.adminReady()` helper for page scripts that use plugins.
+- GitHub Actions CI running Pint, the frontend build and tests on PHP 8.3 and 8.4.
+- Feature tests for the Categories CRUD.
+
+### Changed
+
+- Admin plugins and their CSS are loaded on demand, only when enabled. The base admin bundle went from 881 kB to 183 kB.
+- **Upgrade note:** page scripts that use plugins must use `window.adminReady(...)` instead of `DOMContentLoaded`.
+- Tests use an in-memory SQLite database instead of a local MySQL test database.
+- jQuery is now a direct npm dependency.
+- Documented PHP requirement aligned with `composer.json` (PHP 8.3 or newer).
+
+### Removed
+
+- Unused Breeze Tailwind layout, navigation, welcome page and components.
+- Tailwind CSS, PostCSS, Autoprefixer and Alpine.js.
 
 ---
 
 ## v2.0.0 - Public Template Release
 
-### Planned
+### Added
 
 - Public template release.
 - Custom public landing page instead of the default Laravel welcome page.
+
+### Changed
+
 - Final documentation polish.
 - Final dependency and security audit checks.
 - Final test and production build verification.
