@@ -478,7 +478,10 @@ git config --add remote.starter.fetch '+refs/tags/*:refs/tags/starter/*'
 git fetch starter
 git switch -C main starter/v2.2.0
 git branch --unset-upstream
+git remote set-url --push starter no-push
 ```
+
+The project now has two remotes: `origin` (added below) is the project repository you push to every day, and `starter` is only used to fetch new starter releases. The last command disables pushing to `starter`, so project code can never be pushed to the public starter by mistake. Fetching still works.
 
 Create an empty repository for the project (GitHub, GitLab or anywhere else) and push to it:
 
