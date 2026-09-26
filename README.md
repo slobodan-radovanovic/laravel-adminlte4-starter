@@ -508,7 +508,11 @@ This starter includes feature tests for:
 - categories access
 - first admin user command
 
-The test database is configured in `phpunit.xml`.
+Tests run against an in-memory SQLite database configured in `phpunit.xml`, so no test database needs to be created. The `pdo_sqlite` PHP extension is required.
+
+To run the tests against MySQL instead, override the `DB_*` variables in `phpunit.xml` or in a `.env.testing` file.
+
+GitHub Actions runs Pint, the test suite and the frontend build on every push and pull request (`.github/workflows/ci.yml`).
 
 ---
 
