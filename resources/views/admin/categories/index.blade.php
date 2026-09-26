@@ -141,7 +141,7 @@ datatables
 
 @push('scripts')
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        window.adminReady(function () {
             if (window.adminPluginEnabled('datatables')) {
                 new DataTable('#categories-table');
             }

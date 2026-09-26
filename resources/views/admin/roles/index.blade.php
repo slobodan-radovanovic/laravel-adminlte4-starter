@@ -104,7 +104,7 @@
 
 @push('scripts')
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        window.adminReady(function () {
             if (window.adminPluginEnabled('datatables')) {
                 new DataTable('#roles-table');
             }

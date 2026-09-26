@@ -91,7 +91,7 @@
 
 @push('scripts')
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        window.adminReady(function () {
             if (window.adminPluginEnabled('flatpickr')) {
                 window.flatpickr('.js-flatpickr', {
                     dateFormat: 'Y-m-d'

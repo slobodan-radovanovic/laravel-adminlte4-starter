@@ -2,12 +2,7 @@
 @import "bootstrap-icons/font/bootstrap-icons.css";
 @import "admin-lte/dist/css/adminlte.css";
 
-@import "datatables.net-bs5/css/dataTables.bootstrap5.css";
-@import "select2/dist/css/select2.css";
-@import "select2-bootstrap-5-theme/dist/select2-bootstrap-5-theme.css";
-
-@import url("../../node_modules/flatpickr/dist/flatpickr.css");
-@import url("../../node_modules/dropzone/dist/dropzone.css");
+/* Plugin styles are loaded together with their plugin from resources/js/admin.js. */
 
 .admin-flash-overlay {
   position: fixed;

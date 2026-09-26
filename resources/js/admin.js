@@ -1,35 +1,109 @@
 import * as bootstrap from 'bootstrap';
 import 'admin-lte/dist/js/adminlte.js';
+import $ from 'jquery';
 
 window.bootstrap = bootstrap;
-
-import $ from 'jquery';
-import DataTable from 'datatables.net-bs5';
-import select2 from 'select2';
-import Chart from 'chart.js/auto';
-import flatpickr from 'flatpickr';
-import Swal from 'sweetalert2';
-import Inputmask from 'inputmask/dist/inputmask.es6.js';
-import Sortable from 'sortablejs';
-import Dropzone from 'dropzone';
-
-
 window.$ = window.jQuery = $;
-window.DataTable = DataTable;
-window.Chart = Chart;
-window.flatpickr = flatpickr;
-window.Swal = Swal;
-window.Inputmask = Inputmask;
-window.Sortable = Sortable;
-window.Dropzone = Dropzone;
 
-window.adminPluginEnabled = function (plugin) {
-  return Array.isArray(window.AdminPlugins) && window.AdminPlugins.includes(plugin);
+/*
+ * Plugins are split into separate chunks and loaded only when they are enabled
+ * in config/adminlte.php or pushed to the "plugins" stack of the current page.
+ */
+const pluginLoaders = {
+    datatables: async () => {
+        const [{ default: DataTable }] = await Promise.all([
+            import('datatables.net-bs5'),
+            import('datatables.net-bs5/css/dataTables.bootstrap5.css'),
+        ]);
+
+        window.DataTable = DataTable;
+    },
+
+    select2: async () => {
+        const [{ default: select2 }] = await Promise.all([
+            import('select2'),
+            import('select2/dist/css/select2.css'),
+            import('select2-bootstrap-5-theme/dist/select2-bootstrap-5-theme.css'),
+        ]);
+
+        select2($);
+    },
+
+    chartjs: async () => {
+        const { default: Chart } = await import('chart.js/auto');
+
+        window.Chart = Chart;
+    },
+
+    flatpickr: async () => {
+        const [{ default: flatpickr }] = await Promise.all([
+            import('flatpickr'),
+            import('flatpickr/dist/flatpickr.css'),
+        ]);
+
+        window.flatpickr = flatpickr;
+    },
+
+    sweetalert2: async () => {
+        const { default: Swal } = await import('sweetalert2');
+
+        window.Swal = Swal;
+    },
+
+    inputmask: async () => {
+        const { default: Inputmask } = await import('inputmask/dist/inputmask.es6.js');
+
+        window.Inputmask = Inputmask;
+    },
+
+    sortablejs: async () => {
+        const { default: Sortable } = await import('sortablejs');
+
+        window.Sortable = Sortable;
+    },
+
+    dropzone: async () => {
+        const [{ default: Dropzone }] = await Promise.all([
+            import('dropzone'),
+            import('dropzone/dist/dropzone.css'),
+        ]);
+
+        Dropzone.autoDiscover = false;
+        window.Dropzone = Dropzone;
+    },
 };
 
-select2($);
+const enabledPlugins = Array.isArray(window.AdminPlugins) ? window.AdminPlugins : [];
 
-Dropzone.autoDiscover = false;
+window.adminPluginEnabled = function (plugin) {
+    return enabledPlugins.includes(plugin);
+};
+
+const pluginsReady = Promise.all(
+    enabledPlugins
+        .filter((plugin) => pluginLoaders[plugin])
+        .map((plugin) => pluginLoaders[plugin]().catch((error) => {
+            console.error(`Failed to load admin plugin "${plugin}".`, error);
+        })),
+);
+
+const domReady = new Promise((resolve) => {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', resolve, { once: true });
+    } else {
+        resolve();
+    }
+});
+
+const adminReady = Promise.all([domReady, pluginsReady]);
+
+// Callbacks queued by page scripts before this module ran (see layouts/partials/plugins.blade.php).
+window.adminReady = function (callback) {
+    adminReady.then(() => callback());
+};
+
+(window.__adminReadyQueue || []).forEach((callback) => window.adminReady(callback));
+delete window.__adminReadyQueue;
 
 const THEME_STORAGE_KEY = 'admin-theme';
 
@@ -84,46 +158,39 @@ function initThemeToggle() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+function initFlash() {
+    const flash = document.querySelector('[data-admin-flash]');
+
+    if (!flash) {
+        return;
+    }
+
+    const close = function () {
+        flash.remove();
+    };
+
+    flash.querySelector('[data-admin-flash-close]')?.addEventListener('click', close);
+
+    flash.addEventListener('click', function (event) {
+        if (event.target === flash) {
+            close();
+        }
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            close();
+        }
+    });
+
+    const delay = Number(flash.dataset.adminFlashDelay || 3000);
+
+    if (delay > 0) {
+        setTimeout(close, delay);
+    }
+}
+
+domReady.then(() => {
     initThemeToggle();
-});
-
-/*document.addEventListener('DOMContentLoaded', function () {
-  document.querySelectorAll('.toast').forEach(function (toastElement) {
-    const toast = new window.bootstrap.Toast(toastElement);
-
-    toast.show();
-  });
-});*/
-
-document.addEventListener('DOMContentLoaded', function () {
-  const flash = document.querySelector('[data-admin-flash]');
-
-  if (! flash) {
-    return;
-  }
-
-  const close = function () {
-    flash.remove();
-  };
-
-  flash.querySelector('[data-admin-flash-close]')?.addEventListener('click', close);
-
-  flash.addEventListener('click', function (event) {
-    if (event.target === flash) {
-      close();
-    }
-  });
-
-  document.addEventListener('keydown', function (event) {
-    if (event.key === 'Escape') {
-      close();
-    }
-  });
-
-  const delay = Number(flash.dataset.adminFlashDelay || 3000);
-
-  if (delay > 0) {
-    setTimeout(close, delay);
-  }
+    initFlash();
 });

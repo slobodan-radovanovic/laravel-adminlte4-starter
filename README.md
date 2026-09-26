@@ -425,12 +425,14 @@ datatables
 @endpush
 ```
 
-Then check if the plugin is active:
+Each plugin is a separate Vite chunk. Its JavaScript and CSS are downloaded only on pages where it is enabled, so pages without plugins stay small.
+
+Plugins load asynchronously, so wrap page code in `window.adminReady()` instead of `DOMContentLoaded`. The callback runs once the DOM is ready and all enabled plugins are loaded:
 
 ```blade
 @push('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    window.adminReady(function () {
         if (window.adminPluginEnabled('datatables')) {
             new DataTable('#users-table');
         }
@@ -585,7 +587,6 @@ Recommended workflow:
 Possible future improvements:
 
 - optional feedback type selection: popup, toast or inline alert
-- dynamic plugin imports
 - more AdminLTE components
 - optional screenshots
 - additional tests
