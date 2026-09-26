@@ -41,6 +41,21 @@ class AdminAccessTest extends TestCase
             ->assertForbidden();
     }
 
+    public function test_unverified_user_is_redirected_from_admin_pages(): void
+    {
+        $this->seed(RolePermissionSeeder::class);
+
+        $user = User::factory()->unverified()->create();
+
+        $user->assignRole('Super Admin');
+
+        foreach (['dashboard', 'users.index', 'roles.index', 'categories.index'] as $route) {
+            $this->actingAs($user)
+                ->get(route($route))
+                ->assertRedirect(route('verification.notice'));
+        }
+    }
+
     public function test_super_admin_can_access_users_roles_and_categories(): void
     {
         $this->seed(RolePermissionSeeder::class);

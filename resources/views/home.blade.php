@@ -51,7 +51,7 @@
                                                 Login
                                             </a>
 
-                                            @if (Route::has('register'))
+                                            @if (Route::has('register') && config('adminlte.auth.registration'))
                                                 <a href="{{ route('register') }}" class="btn btn-outline-secondary btn-lg">
                                                     <i class="bi bi-person-plus me-1"></i>
                                                     Register

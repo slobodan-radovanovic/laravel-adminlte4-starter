@@ -86,12 +86,15 @@
                     <td>{{ $user->created_at?->format('Y-m-d') }}</td>
 
                     <td class="text-end">
-                        @can('edit users')
-                            <a href="{{ route('users.edit', $user) }}"
-                               class="btn btn-sm btn-outline-primary">
-                                <i class="bi bi-pencil"></i>
-                            </a>
-                        @endcan
+                        @if ($user->isSuperAdmin() && ! auth()->user()->can('manage super admins'))
+                            <span class="text-muted small">Protected</span>
+                        @else
+                            @can('edit users')
+                                <a href="{{ route('users.edit', $user) }}"
+                                   class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                            @endcan
 
                             @can('delete users')
                                 @if (! $user->is(auth()->user()))
@@ -105,6 +108,7 @@
                                     <span class="text-muted small">Current user</span>
                                 @endif
                             @endcan
+                        @endif
                     </td>
                 </tr>
             @endforeach

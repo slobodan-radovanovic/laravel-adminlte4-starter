@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -9,7 +10,14 @@ class UpdateUserRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()?->can('edit users') ?? false;
+        /** @var User $user */
+        $user = $this->route('user');
+
+        if (! $this->user()?->can('edit users')) {
+            return false;
+        }
+
+        return ! $user->isSuperAdmin() || $this->user()->can('manage super admins');
     }
 
     protected function prepareForValidation(): void
@@ -34,7 +42,11 @@ class UpdateUserRequest extends FormRequest
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
             'email_verified' => ['nullable', 'boolean'],
             'roles' => ['nullable', 'array'],
-            'roles.*' => ['string', Rule::exists('roles', 'name')],
+            'roles.*' => [
+                'string',
+                Rule::exists('roles', 'name'),
+                Rule::notIn($this->user()->can('manage super admins') ? [] : [User::SUPER_ADMIN_ROLE]),
+            ],
         ];
     }
 }

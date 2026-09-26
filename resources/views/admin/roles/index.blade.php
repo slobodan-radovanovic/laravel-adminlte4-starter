@@ -70,25 +70,25 @@
                     <td>{{ $role->created_at?->format('Y-m-d') }}</td>
 
                     <td class="text-end">
-                        @can('edit roles')
-                            <a href="{{ route('roles.edit', $role) }}"
-                               class="btn btn-sm btn-outline-primary">
-                                <i class="bi bi-pencil"></i>
-                            </a>
-                        @endcan
+                        @if ($role->name === \App\Models\User::SUPER_ADMIN_ROLE)
+                            <span class="text-muted small">Protected</span>
+                        @else
+                            @can('edit roles')
+                                <a href="{{ route('roles.edit', $role) }}"
+                                   class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                            @endcan
 
                             @can('delete roles')
-                                @if ($role->name !== 'Super Admin')
-                                    <x-admin.confirm-delete
-                                        id="delete-role-{{ $role->id }}"
-                                        :action="route('roles.destroy', $role)"
-                                        title="Delete Role"
-                                        message="Are you sure you want to delete role {{ $role->name }}?"
-                                    />
-                                @else
-                                    <span class="text-muted small">Protected</span>
-                                @endif
+                                <x-admin.confirm-delete
+                                    id="delete-role-{{ $role->id }}"
+                                    :action="route('roles.destroy', $role)"
+                                    title="Delete Role"
+                                    message="Are you sure you want to delete role {{ $role->name }}?"
+                                />
                             @endcan
+                        @endif
                     </td>
                 </tr>
             @endforeach

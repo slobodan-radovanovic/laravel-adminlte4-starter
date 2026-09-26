@@ -6,6 +6,21 @@ This project follows a simple versioned release history for the Laravel AdminLTE
 
 ---
 
+## v2.0.1 - Security Fixes
+
+### Security
+
+- Super Admin users now pass every permission check through `Gate::before`.
+- Only Super Admin users can assign the Super Admin role or edit and delete Super Admin users.
+- The Super Admin role can no longer be renamed or edited.
+- Admin pages now require a verified email address (`User` implements `MustVerifyEmail`).
+
+### Added
+
+- `ADMINLTE_REGISTRATION_ENABLED` option to turn off public registration.
+
+---
+
 ## v2.0.0 - Public Template Release
 
 ### Planned

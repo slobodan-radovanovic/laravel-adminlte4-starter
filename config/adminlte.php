@@ -200,6 +200,20 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Authentication
+    |--------------------------------------------------------------------------
+    |
+    | Disable public registration when accounts should only be created by
+    | administrators or with the admin:create-user command.
+    |
+    */
+
+    'auth' => [
+        'registration' => env('ADMINLTE_REGISTRATION_ENABLED', true),
+    ],
+
     'feedback' => [
         'type' => 'popup', // popup, toast, alert
         'auto_close' => true,

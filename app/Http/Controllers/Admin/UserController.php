@@ -56,6 +56,8 @@ class UserController extends Controller
     {
         abort_unless(auth()->user()?->can('edit users'), 403);
 
+        $this->ensureCanManage($user);
+
         $roles = $this->roles();
 
         $userRoles = $user->roles()
@@ -71,8 +73,8 @@ class UserController extends Controller
 
         $roles = $validated['roles'] ?? [];
 
-        if ($user->hasRole('Super Admin') && ! in_array('Super Admin', $roles, true)) {
-            $superAdminCount = User::role('Super Admin')->count();
+        if ($user->isSuperAdmin() && ! in_array(User::SUPER_ADMIN_ROLE, $roles, true)) {
+            $superAdminCount = User::role(User::SUPER_ADMIN_ROLE)->count();
 
             if ($superAdminCount <= 1) {
                 return redirect()
@@ -104,14 +106,16 @@ class UserController extends Controller
     {
         abort_unless(auth()->user()?->can('delete users'), 403);
 
+        $this->ensureCanManage($user);
+
         if ($user->is(auth()->user())) {
             return redirect()
                 ->route('users.index')
                 ->with('error', 'You cannot delete your own account.');
         }
 
-        if ($user->hasRole('Super Admin')) {
-            $superAdminCount = User::role('Super Admin')->count();
+        if ($user->isSuperAdmin()) {
+            $superAdminCount = User::role(User::SUPER_ADMIN_ROLE)->count();
 
             if ($superAdminCount <= 1) {
                 return redirect()
@@ -127,9 +131,18 @@ class UserController extends Controller
             ->with('success', 'User deleted successfully.');
     }
 
+    private function ensureCanManage(User $user): void
+    {
+        abort_if($user->isSuperAdmin() && ! auth()->user()->can('manage super admins'), 403);
+    }
+
     private function roles(): array
     {
         return Role::query()
+            ->when(
+                ! auth()->user()->can('manage super admins'),
+                fn ($query) => $query->where('name', '!=', User::SUPER_ADMIN_ROLE),
+            )
             ->orderBy('name')
             ->pluck('name', 'name')
             ->toArray();

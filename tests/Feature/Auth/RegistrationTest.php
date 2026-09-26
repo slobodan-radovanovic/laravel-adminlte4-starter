@@ -28,4 +28,22 @@ class RegistrationTest extends TestCase
         $this->assertAuthenticated();
         $response->assertRedirect(route('dashboard', absolute: false));
     }
+
+    public function test_registration_can_be_disabled(): void
+    {
+        config(['adminlte.auth.registration' => false]);
+
+        $this->get('/register')->assertNotFound();
+
+        $this->post('/register', [
+            'name' => 'Test User',
+            'email' => 'test@examples.com',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+        ])->assertNotFound();
+
+        $this->assertGuest();
+
+        $this->get('/login')->assertDontSee(route('register'));
+    }
 }

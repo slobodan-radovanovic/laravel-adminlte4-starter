@@ -175,6 +175,16 @@ Included authentication features:
 
 The Breeze views are adapted to match the AdminLTE/Bootstrap UI.
 
+Admin pages require a verified email address, because the `User` model implements `MustVerifyEmail`. Users created with `php artisan admin:create-user` are verified automatically.
+
+Public registration can be turned off in `.env`:
+
+```env
+ADMINLTE_REGISTRATION_ENABLED=false
+```
+
+When it is disabled, the register routes return 404 and the register links are hidden.
+
 ---
 
 ## Roles and Permissions
@@ -209,6 +219,9 @@ Safety rules included:
 - the last Super Admin user cannot be deleted
 - the last Super Admin role cannot be removed from the last Super Admin user
 - a user cannot delete their own account
+- Super Admin users pass every permission check through `Gate::before`, including permissions added later
+- only Super Admin users can assign the Super Admin role or edit and delete Super Admin users
+- the Super Admin role cannot be renamed or edited
 
 ---
 
