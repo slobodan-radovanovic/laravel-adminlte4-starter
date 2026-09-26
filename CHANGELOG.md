@@ -6,6 +6,21 @@ This project follows a simple versioned release history for the Laravel AdminLTE
 
 ---
 
+## v2.2.0 - Project-Friendly Updates
+
+### Added
+
+- `config/admin-menu.php` for the sidebar menu, owned by each project.
+- `ProjectPermissionSeeder` for project-specific permissions and roles.
+- Dependabot updates for Composer, npm and GitHub Actions.
+- README guide for starting projects from the starter and merging new starter releases by tag.
+
+### Changed
+
+- **Upgrade note:** the sidebar menu moved from the `menu` key in `config/adminlte.php` to the `items` key in `config/admin-menu.php`. An existing `adminlte.menu` still works and takes precedence.
+
+---
+
 ## v2.1.0 - Cleanup and Performance
 
 ### Added
