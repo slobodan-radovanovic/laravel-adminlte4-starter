@@ -213,6 +213,20 @@ Example permissions include:
 
 The Super Admin role receives all permissions.
 
+Add your project's own permissions and roles in `database/seeders/ProjectPermissionSeeder.php`. It runs after the starter's `RolePermissionSeeder`, and starter releases avoid changing it:
+
+```php
+protected array $permissions = [
+    'view invoices',
+    'create invoices',
+];
+
+protected array $roles = [
+    'Admin' => ['view invoices', 'create invoices'],
+    'Accountant' => ['view invoices'],
+];
+```
+
 Safety rules included:
 
 - the Super Admin role cannot be deleted
@@ -270,19 +284,21 @@ It contains configuration for:
 - navbar
 - sidebar
 - footer
-- menu
 - plugins
+- authentication
 - feedback behavior
 
 ---
 
 ## Sidebar Menu
 
-The sidebar menu is configured in:
+The sidebar menu is configured in the `items` key of:
 
 ```text
-config/adminlte.php
+config/admin-menu.php
 ```
+
+This file belongs to your project, so starter updates do not overwrite your menu.
 
 Supported menu features:
 
@@ -449,28 +465,53 @@ A plugin examples page is included at:
 
 ---
 
-## Updating Existing Projects from This Starter
+## Starting a New Project from This Starter
 
-Template repositories do not automatically update projects created from them.
+For long-lived projects, start from a clone of this repository instead of GitHub's "Use this template" button. A clone keeps the starter's history, so later starter releases can be merged into your project with `git merge`. A repository created from the template has unrelated history and git refuses to merge it.
 
-For long-term projects, you can add this starter as an additional remote:
-
-```bash
-git remote add starter git@github.com:slobodan-radovanovic/laravel-adminlte4-starter.git
-```
-
-When you want to pull starter updates into an existing project:
+Create the project, keeping the starter as a remote named `starter` and its tags under a `starter/` prefix so they never collide with your project's own tags:
 
 ```bash
-git checkout main
-git checkout -b update-from-starter
+git clone --no-tags --origin starter git@github.com:slobodan-radovanovic/laravel-adminlte4-starter.git my-project
+cd my-project
+git config --add remote.starter.fetch '+refs/tags/*:refs/tags/starter/*'
 git fetch starter
-git merge starter/main
+git switch -C main starter/v2.2.0
+git branch --unset-upstream
 ```
 
-Then review conflicts, test the application and merge the update branch when ready.
+Create an empty repository for the project (GitHub, GitLab or anywhere else) and push to it:
 
-Useful checks after updating:
+```bash
+git remote add origin git@gitlab.com:your-name/my-project.git
+git push -u origin main
+```
+
+Then follow the [Installation](#installation) steps from `composer install` onward.
+
+### Files that belong to your project
+
+Starter releases avoid changing these files, so customize them freely:
+
+- `config/admin-menu.php` for the sidebar menu
+- `database/seeders/ProjectPermissionSeeder.php` for your permissions and roles
+- `.env`
+
+You can also edit any other file. Expect merge conflicts in those files when you update, especially in the example modules (Categories and Plugins), which you may delete.
+
+---
+
+## Updating a Project to a New Starter Version
+
+Read the release notes in `CHANGELOG.md` first, especially any **Upgrade note**. Then merge the release tag on a separate branch:
+
+```bash
+git fetch starter
+git switch -c update/starter-v2.3.0
+git merge starter/v2.3.0
+```
+
+Resolve conflicts, then check the application:
 
 ```bash
 composer install
@@ -480,7 +521,13 @@ php artisan test
 npm run build
 ```
 
-For safer upgrades, copy only the specific files you need from the starter and commit them manually.
+Merge the update branch into `main` when everything passes. Merge releases in order where possible (for example `v2.2.0` before `v2.3.0`), so each upgrade note is applied once.
+
+### Upgrading from v2.1 or older to v2.2
+
+The sidebar menu moved from `config/adminlte.php` (`menu` key) to `config/admin-menu.php` (`items` key). If your project still has a `menu` key in `config/adminlte.php`, it keeps working and takes precedence. Move your menu items into `config/admin-menu.php` and remove the old `menu` key when convenient.
+
+If your project was created with "Use this template", add the starter remote as shown above and do the first update with `git merge --allow-unrelated-histories starter/v2.2.0`. Expect many conflicts on that first merge, after which updates work normally.
 
 ---
 
@@ -559,6 +606,8 @@ app/Console/Commands/CreateAdminUserCommand.php
 app/Http/Controllers/Admin
 app/Http/Requests/Admin
 config/adminlte.php
+config/admin-menu.php
+database/seeders/ProjectPermissionSeeder.php
 resources/css/admin.css
 resources/js/admin.js
 resources/views/layouts/admin.blade.php
@@ -576,13 +625,14 @@ This project is intended to be used as a starting point for Laravel admin applic
 
 Recommended workflow:
 
-1. Create a new repository from this starter.
+1. Start the project as described in [Starting a New Project from This Starter](#starting-a-new-project-from-this-starter).
 2. Configure `.env`.
 3. Run migrations and seeders.
 4. Create the first Super Admin user.
 5. Replace or extend the example modules.
-6. Adjust `config/adminlte.php` for your application.
+6. Adjust `config/adminlte.php`, `config/admin-menu.php` and `ProjectPermissionSeeder` for your application.
 7. Add your own business modules.
+8. Merge new starter releases as described in [Updating a Project to a New Starter Version](#updating-a-project-to-a-new-starter-version).
 
 ---
 

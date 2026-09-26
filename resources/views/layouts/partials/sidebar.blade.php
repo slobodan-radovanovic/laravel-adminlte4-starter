@@ -13,7 +13,7 @@
                 data-lte-toggle="treeview"
                 role="menu"
                 data-accordion="false">
-                @foreach (config('adminlte.menu', []) as $item)
+                @foreach (config('adminlte.menu') ?? config('admin-menu.items', []) as $item)
                     @include('layouts.partials.sidebar-item', ['item' => $item])
                 @endforeach
             </ul>
