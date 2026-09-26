@@ -11,7 +11,7 @@ It provides authentication, a Bootstrap/AdminLTE layout, role and permission man
 ## Features
 
 - Laravel 13 application structure
-- PHP 8.4 ready
+- PHP 8.3+ (tested on PHP 8.3 and 8.4)
 - AdminLTE 4 manually integrated through npm and Vite
 - Bootstrap 5 based admin UI
 - Laravel Breeze Blade authentication
@@ -37,7 +37,7 @@ It provides authentication, a Bootstrap/AdminLTE layout, role and permission man
 ## Tech Stack
 
 - Laravel 13
-- PHP 8.4
+- PHP 8.3 or newer
 - MySQL or MariaDB
 - Blade
 - Bootstrap 5
@@ -77,7 +77,7 @@ AdminLTE is integrated manually so the project structure stays transparent and e
 
 ## Requirements
 
-- PHP 8.4 or newer
+- PHP 8.3 or newer
 - Composer
 - Node.js and npm
 - MySQL or MariaDB
@@ -175,6 +175,16 @@ Included authentication features:
 
 The Breeze views are adapted to match the AdminLTE/Bootstrap UI.
 
+Admin pages require a verified email address, because the `User` model implements `MustVerifyEmail`. Users created with `php artisan admin:create-user` are verified automatically.
+
+Public registration can be turned off in `.env`:
+
+```env
+ADMINLTE_REGISTRATION_ENABLED=false
+```
+
+When it is disabled, the register routes return 404 and the register links are hidden.
+
 ---
 
 ## Roles and Permissions
@@ -209,6 +219,9 @@ Safety rules included:
 - the last Super Admin user cannot be deleted
 - the last Super Admin role cannot be removed from the last Super Admin user
 - a user cannot delete their own account
+- Super Admin users pass every permission check through `Gate::before`, including permissions added later
+- only Super Admin users can assign the Super Admin role or edit and delete Super Admin users
+- the Super Admin role cannot be renamed or edited
 
 ---
 
@@ -412,12 +425,14 @@ datatables
 @endpush
 ```
 
-Then check if the plugin is active:
+Each plugin is a separate Vite chunk. Its JavaScript and CSS are downloaded only on pages where it is enabled, so pages without plugins stay small.
+
+Plugins load asynchronously, so wrap page code in `window.adminReady()` instead of `DOMContentLoaded`. The callback runs once the DOM is ready and all enabled plugins are loaded:
 
 ```blade
 @push('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    window.adminReady(function () {
         if (window.adminPluginEnabled('datatables')) {
             new DataTable('#users-table');
         }
@@ -493,7 +508,11 @@ This starter includes feature tests for:
 - categories access
 - first admin user command
 
-The test database is configured in `phpunit.xml`.
+Tests run against an in-memory SQLite database configured in `phpunit.xml`, so no test database needs to be created. The `pdo_sqlite` PHP extension is required.
+
+To run the tests against MySQL instead, override the `DB_*` variables in `phpunit.xml` or in a `.env.testing` file.
+
+GitHub Actions runs Pint, the test suite and the frontend build on every push and pull request (`.github/workflows/ci.yml`).
 
 ---
 
@@ -572,7 +591,6 @@ Recommended workflow:
 Possible future improvements:
 
 - optional feedback type selection: popup, toast or inline alert
-- dynamic plugin imports
 - more AdminLTE components
 - optional screenshots
 - additional tests

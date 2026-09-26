@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreRoleRequest;
 use App\Http\Requests\Admin\UpdateRoleRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Spatie\Permission\Models\Permission;
@@ -49,6 +50,7 @@ class RoleController extends Controller
     public function edit(Role $role): View
     {
         abort_unless(auth()->user()?->can('edit roles'), 403);
+        abort_if($role->name === User::SUPER_ADMIN_ROLE, 403);
 
         $permissions = $this->groupedPermissions();
 
@@ -76,7 +78,7 @@ class RoleController extends Controller
     {
         abort_unless(auth()->user()?->can('delete roles'), 403);
 
-        if ($role->name === 'Super Admin') {
+        if ($role->name === User::SUPER_ADMIN_ROLE) {
             return redirect()
                 ->route('roles.index')
                 ->with('error', 'The Super Admin role cannot be deleted.');

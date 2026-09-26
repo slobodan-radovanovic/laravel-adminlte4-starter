@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
@@ -10,7 +11,11 @@ class UpdateRoleRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()?->can('edit roles') ?? false;
+        /** @var Role $role */
+        $role = $this->route('role');
+
+        return ($this->user()?->can('edit roles') ?? false)
+            && $role->name !== User::SUPER_ADMIN_ROLE;
     }
 
     public function rules(): array

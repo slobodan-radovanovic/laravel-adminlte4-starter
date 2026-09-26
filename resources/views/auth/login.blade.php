@@ -78,7 +78,7 @@
         </p>
     @endif
 
-    @if (Route::has('register'))
+    @if (Route::has('register') && config('adminlte.auth.registration'))
         <p class="mb-0">
             <a href="{{ route('register') }}" class="text-center">
                 Register a new membership

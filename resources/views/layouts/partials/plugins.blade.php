@@ -29,4 +29,9 @@
 
 <script>
     window.AdminPlugins = @json($enabledPlugins);
+
+    // Queue page callbacks until admin.js has loaded the enabled plugins and the DOM is ready.
+    window.adminReady = window.adminReady || function (callback) {
+        (window.__adminReadyQueue = window.__adminReadyQueue || []).push(callback);
+    };
 </script>
