@@ -29,6 +29,14 @@ return [
         ],
 
         [
+            'text' => 'File Manager',
+            'route' => 'file-manager',
+            'icon' => 'bi bi-folder2-open',
+            'can' => 'use filemanager',
+            'active' => ['file-manager'],
+        ],
+
+        [
             'text' => 'ACCESS CONTROL',
             'header' => true,
         ],

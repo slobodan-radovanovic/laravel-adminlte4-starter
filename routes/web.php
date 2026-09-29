@@ -6,7 +6,9 @@ use App\Http\Controllers\Admin\PluginExampleController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\ProtectFileManagerActions;
 use Illuminate\Support\Facades\Route;
+use UniSharp\LaravelFilemanager\Lfm;
 
 Route::view('/', 'home')->name('home');
 
@@ -45,6 +47,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('layout', 'layout')->name('layout');
             Route::get('notifications', 'notifications')->name('notifications');
         });
+});
+
+// Laravel Filemanager (UniSharp). Its package routes are disabled in config/lfm.php so they can be protected here.
+Route::middleware(['auth', 'verified', 'can:use filemanager'])->group(function () {
+    Route::view('/file-manager', 'admin.file-manager')->name('file-manager');
+
+    Route::prefix('filemanager')
+        ->middleware(ProtectFileManagerActions::class)
+        ->group(fn () => Lfm::routes());
 });
 
 require __DIR__.'/auth.php';

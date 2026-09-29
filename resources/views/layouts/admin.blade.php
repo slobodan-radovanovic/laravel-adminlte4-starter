@@ -16,6 +16,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    @if (Route::has('unisharp.lfm.show') && auth()->user()?->can('use filemanager'))
+        <meta name="admin-file-manager" content="{{ route('unisharp.lfm.show') }}">
+    @endif
     <title>@yield('title', config('adminlte.title', config('app.name', 'Admin Panel')))</title>
     @include('layouts.partials.theme-script')
     @vite(['resources/css/admin.css', 'resources/js/admin.js'])

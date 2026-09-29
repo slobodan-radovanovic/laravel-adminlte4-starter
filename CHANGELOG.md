@@ -6,6 +6,29 @@ This project follows a simple versioned release history for the Laravel AdminLTE
 
 ---
 
+## v2.5.0 - File Manager
+
+### Added
+
+- Laravel Filemanager (UniSharp) with a File Manager page, private folders per user and a shared folder.
+- `form.file-picker` component that opens the file manager in a modal and previews the chosen images.
+- TinyMCE's image and link dialogs and Quill's image button pick files from the file manager.
+- `use filemanager` permission for Admin and Super Admin.
+- `window.adminOpenFileManager()` for custom integrations.
+
+### Security
+
+- File manager routes require login, a verified email and the `use filemanager` permission.
+- Its delete, rename, move, crop and resize actions only run as AJAX requests, because the package sends them as GET requests without a CSRF token.
+- Uploads are limited to 10 MB, and SVG, HTML and script files are rejected.
+
+### Upgrade notes
+
+- Run `php artisan db:seed --class=RolePermissionSeeder`, `php artisan storage:link` and `php artisan vendor:publish --tag=lfm_public --force`.
+- The PHP `exif`, `fileinfo` and `gd` extensions are required.
+
+---
+
 ## v2.4.0 - Blade Components
 
 ### Added

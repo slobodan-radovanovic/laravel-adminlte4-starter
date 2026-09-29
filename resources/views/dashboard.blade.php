@@ -106,7 +106,8 @@
                     <li>Config-driven sidebar menu</li>
                     <li>Light, dark and auto color modes</li>
                     <li>Component and plugin examples</li>
-                    <li>45 reusable Blade components</li>
+                    <li>46 reusable Blade components</li>
+                    <li>File manager with editor integration</li>
                 </ul>
             </x-admin.card>
         </div>

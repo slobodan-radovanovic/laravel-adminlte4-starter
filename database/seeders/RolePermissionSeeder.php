@@ -25,6 +25,8 @@ class RolePermissionSeeder extends Seeder
             'create roles',
             'edit roles',
             'delete roles',
+
+            'use filemanager',
         ];
 
         foreach ($permissions as $permission) {
@@ -51,6 +53,8 @@ class RolePermissionSeeder extends Seeder
             'create roles',
             'edit roles',
             'delete roles',
+
+            'use filemanager',
         ]);
     }
 }
