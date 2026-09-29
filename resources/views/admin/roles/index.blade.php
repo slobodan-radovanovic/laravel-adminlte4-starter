@@ -3,22 +3,7 @@
 @section('title', 'Roles')
 
 @section('content_header')
-    <div class="row">
-        <div class="col-sm-6">
-            <h1 class="mb-0">Roles</h1>
-        </div>
-
-        <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-end">
-                <li class="breadcrumb-item">
-                    <a href="{{ route('dashboard') }}">Home</a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">
-                    Roles
-                </li>
-            </ol>
-        </div>
-    </div>
+    <x-admin.content-header title="Roles" />
 @endsection
 
 @section('content')
@@ -44,17 +29,7 @@
                 action-text="Create Role"
             />
         @else
-        <table id="roles-table" class="table table-bordered table-striped align-middle">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Permissions</th>
-                <th>Created</th>
-                <th class="text-end">Actions</th>
-            </tr>
-            </thead>
-
-            <tbody>
+        <x-admin.datatable id="roles-table" :heads="['Name', 'Permissions', 'Created', ['label' => 'Actions', 'class' => 'text-end', 'sortable' => false]]">
             @foreach ($roles as $role)
                 <tr>
                     <td>
@@ -92,22 +67,7 @@
                     </td>
                 </tr>
             @endforeach
-            </tbody>
-        </table>
+        </x-admin.datatable>
         @endif
     </x-admin.card>
 @endsection
-
-@push('plugins')
-    datatables
-@endpush
-
-@push('scripts')
-    <script>
-        window.adminReady(function () {
-            if (window.adminPluginEnabled('datatables')) {
-                new DataTable('#roles-table');
-            }
-        });
-    </script>
-@endpush

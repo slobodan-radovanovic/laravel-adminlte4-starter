@@ -3,22 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-    <div class="row">
-        <div class="col-sm-6">
-            <h1 class="mb-0">Dashboard</h1>
-        </div>
-
-        <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-end">
-                <li class="breadcrumb-item">
-                    <a href="{{ route('dashboard') }}">Home</a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">
-                    Dashboard
-                </li>
-            </ol>
-        </div>
-    </div>
+    <x-admin.content-header title="Dashboard" />
 @endsection
 
 @section('content')
@@ -120,8 +105,8 @@
                     <li>AdminLTE 4 layout</li>
                     <li>Config-driven sidebar menu</li>
                     <li>Light, dark and auto color modes</li>
-                    <li>DataTables, Select2 and Chart.js examples</li>
-                    <li>Reusable Blade widgets</li>
+                    <li>Component and plugin examples</li>
+                    <li>44 reusable Blade components</li>
                 </ul>
             </x-admin.card>
         </div>

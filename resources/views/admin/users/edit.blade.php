@@ -3,25 +3,7 @@
 @section('title', 'Edit User')
 
 @section('content_header')
-    <div class="row">
-        <div class="col-sm-6">
-            <h1 class="mb-0">Edit User</h1>
-        </div>
-
-        <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-end">
-                <li class="breadcrumb-item">
-                    <a href="{{ route('dashboard') }}">Home</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="{{ route('users.index') }}">Users</a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">
-                    Edit
-                </li>
-            </ol>
-        </div>
-    </div>
+    <x-admin.content-header title="Edit User" :breadcrumbs="['Users' => route('users.index'), 'Edit']" />
 @endsection
 
 @section('content')
