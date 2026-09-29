@@ -19,7 +19,7 @@ It provides authentication, a Bootstrap/AdminLTE layout, role and permission man
 - Dashboard page
 - Config-driven admin layout
 - Sidebar menu with submenu support
-- Light/dark theme switcher
+- Light, dark and auto color modes (AdminLTE ColorMode)
 - Spatie Laravel Permission integration
 - First Super Admin creation command
 - Users CRUD
@@ -287,6 +287,23 @@ It contains configuration for:
 - plugins
 - authentication
 - feedback behavior
+
+---
+
+## Color Modes
+
+The navbar has a color mode menu with **Light**, **Dark** and **Auto**. Auto follows the operating system and switches when the user changes it. The menu uses AdminLTE's built-in ColorMode, so the starter has no theme JavaScript of its own.
+
+Configure it in `config/adminlte.php`:
+
+```php
+'theme' => [
+    'default' => 'light', // used until the user picks a mode: light, dark or auto
+    'available' => ['light', 'dark', 'auto'], // modes shown in the navbar
+],
+```
+
+With a single available mode the menu is hidden. The user's choice is stored in the browser under the `lte-theme` key. Choices saved by starter versions before 2.3 (`admin-theme`) are carried over automatically.
 
 ---
 
