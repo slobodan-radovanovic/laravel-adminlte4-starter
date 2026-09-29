@@ -25,7 +25,7 @@ It provides authentication, a Bootstrap/AdminLTE layout, role and permission man
 - Users CRUD
 - Roles CRUD
 - Categories CRUD example
-- Reusable admin form components
+- 44 AdminLTE Blade components with working examples
 - Reusable feedback components
 - Centered flash popup for success, error, warning and info messages
 - Admin plugin system
@@ -56,6 +56,8 @@ Frontend plugins included:
 - Inputmask
 - SortableJS
 - Dropzone
+- Tom Select
+- Trix editor
 
 ---
 
@@ -316,7 +318,7 @@ The footer is configured in `config/adminlte.php`:
     'enabled' => true,
     'text' => 'AdminLTE 4 Starter',
     'url' => 'https://github.com/slobodan-radovanovic/laravel-adminlte4-starter',
-    'version' => '2.3.1',
+    'version' => '2.4.0',
 ],
 ```
 
@@ -375,37 +377,44 @@ Example:
 
 ---
 
-## Admin Form Components
+## Blade Components
 
-Reusable admin form components are located in:
+The starter ships 44 AdminLTE Blade components in `resources/views/components/admin`, covering the same ground as the component set of [Laravel-AdminLTE](https://github.com/jeroennoten/Laravel-AdminLTE). They are plain anonymous Blade components, so you can open and change any of them.
 
-```text
-resources/views/components/admin/form
-```
+Working examples of every component are in the sidebar under **Examples → Components**:
 
-Included components:
+- `/examples/components/forms`: every form component in one form that really submits, validates and uploads
+- `/examples/components/widgets`
+- `/examples/components/layout`: navbar components, datatable and modals
 
-- input
-- textarea
-- checkbox
-- select
-- actions
+| Group | Components |
+|---|---|
+| Forms (15) | `form.input`, `form.textarea`, `form.select`, `form.options`, `form.select2`, `form.select-tom`, `form.input-date`, `form.date-range`, `form.input-switch`, `form.input-color`, `form.input-slider`, `form.input-file`, `form.input-file-drop`, `form.text-editor`, `form.button` |
+| Layout (6) | `content-header`, `navbar.custom-menu`, `navbar.dropdown`, `navbar.dropdown-item`, `navbar.notification`, `navbar.color-mode` |
+| Tools (2) | `datatable`, `modal` |
+| Widgets (21) | `alert`, `callout`, `card`, `info-box`, `small-box`, `progress`, `progress-group`, `ribbon`, `toast`, `timeline`, `timeline-label`, `timeline-item`, `direct-chat`, `direct-chat-msg`, `direct-chat-contact`, `profile-widget`, `profile-item`, `profile-col-item`, `profile-row-item`, `user-block`, `post` |
 
-Example:
+Also included: `form.checkbox`, `form.actions`, `confirm-delete`, `empty-state` and `status-badge`.
+
+Components that need a plugin add it to the page automatically, so there is no JavaScript to write:
 
 ```blade
-<x-admin.form.input
-    name="name"
-    label="Name"
-    required
-    autofocus
-/>
+<x-admin.form.select2 name="roles[]" label="Roles" multiple :options="$roles" :selected="$userRoles" />
 
-<x-admin.form.actions
-    submit="Save"
-    :cancel-url="route('roles.index')"
-/>
+<x-admin.form.input-date name="published_at" label="Published" time />
+
+<x-admin.datatable id="users-table" :heads="['Name', 'Email', ['label' => 'Actions', 'sortable' => false]]">
+    @foreach ($users as $user)
+        <tr>...</tr>
+    @endforeach
+</x-admin.datatable>
 ```
+
+Plugin options go in the `config` attribute (for example `:config="['pageLength' => 25]"`). If you insert component HTML later (for example into a modal loaded with AJAX), call `window.adminInitComponents(element)` to start its plugins.
+
+Form components show validation errors and keep old input automatically. Names with brackets (`tags[]`) work for multiple values.
+
+`form.select-tom` uses Tom Select (no jQuery, supports creating new options). `form.input-file-drop` uploads each file with Dropzone to your endpoint as soon as it is dropped; the endpoint returns `{"path": "..."}` and the path is submitted with the form. `form.text-editor` uses Trix. Always sanitize its HTML before you display it.
 
 ---
 

@@ -63,3 +63,25 @@
 }
 
 
+
+/* Trix editor toolbar in dark mode. */
+[data-bs-theme="dark"] trix-toolbar .trix-button-group,
+[data-bs-theme="dark"] trix-toolbar .trix-button {
+  border-color: var(--bs-border-color);
+}
+
+[data-bs-theme="dark"] trix-toolbar .trix-button {
+  background-color: var(--bs-secondary-bg);
+}
+
+[data-bs-theme="dark"] trix-toolbar .trix-button--icon::before {
+  filter: invert(1);
+}
+
+[data-bs-theme="dark"] trix-toolbar .trix-button.trix-active {
+  background-color: var(--bs-primary-bg-subtle);
+}
+
+trix-editor.form-control {
+  min-height: 8rem;
+}

@@ -6,6 +6,30 @@ This project follows a simple versioned release history for the Laravel AdminLTE
 
 ---
 
+## v2.4.0 - Blade Components
+
+### Added
+
+- 44 AdminLTE Blade components, matching the component set of Laravel-AdminLTE: 15 form components, 6 layout and navbar components, datatable and modal, and 21 widgets.
+- Example pages under Examples → Components (Forms, Widgets, Layout and Tools). The forms page really submits, validates and uploads files.
+- Components start their plugins automatically through `data-admin-*` attributes; `window.adminInitComponents(element)` starts plugins in HTML added later.
+- Tom Select and Trix editor as lazy-loaded plugins (`tomselect`, `trix`).
+- `form.select` supports `multiple`, grouped options and a custom options slot; `form.input` supports `prepend` and `append` addons.
+- `card` supports themes and the AdminLTE collapse, maximize and remove tools; `info-box` supports progress and a filled style.
+
+### Changed
+
+- Users and Roles pages use `content-header` and `datatable`; all admin pages except the Categories example use `content-header`.
+- The navbar color mode menu is now the `navbar.color-mode` component.
+- Select2 uses AdminLTE's own Select2 theme, which supports dark mode. `select2-bootstrap-5-theme` was removed.
+- Password inputs no longer refill their value after a validation error.
+
+### Fixed
+
+- AJAX and JSON requests got a redirect instead of a JSON response on validation errors outside `api/*`.
+
+---
+
 ## v2.3.1 - Footer Fixes
 
 ### Fixed

@@ -24,7 +24,8 @@ const pluginLoaders = {
         const [{ default: select2 }] = await Promise.all([
             import('select2'),
             import('select2/dist/css/select2.css'),
-            import('select2-bootstrap-5-theme/dist/select2-bootstrap-5-theme.css'),
+            // AdminLTE's Select2 theme matches Bootstrap form controls, including dark mode.
+            import('admin-lte/dist/css/adminlte-select2.css'),
         ]);
 
         select2($);
@@ -72,6 +73,23 @@ const pluginLoaders = {
         Dropzone.autoDiscover = false;
         window.Dropzone = Dropzone;
     },
+
+    tomselect: async () => {
+        const [{ default: TomSelect }] = await Promise.all([
+            import('tom-select'),
+            import('tom-select/dist/css/tom-select.bootstrap5.css'),
+        ]);
+
+        window.TomSelect = TomSelect;
+    },
+
+    trix: async () => {
+        // Registers the <trix-editor> element.
+        await Promise.all([
+            import('trix'),
+            import('trix/dist/trix.css'),
+        ]);
+    },
 };
 
 const enabledPlugins = Array.isArray(window.AdminPlugins) ? window.AdminPlugins : [];
@@ -97,6 +115,145 @@ const domReady = new Promise((resolve) => {
 });
 
 const adminReady = Promise.all([domReady, pluginsReady]);
+
+/*
+ * Blade components in resources/views/components/admin mark their elements with
+ * data-admin-* attributes (JSON options). This starts the matching plugins.
+ * Call window.adminInitComponents(element) after inserting new component HTML.
+ */
+function readOptions(element, attribute) {
+    try {
+        return JSON.parse(element.getAttribute(attribute) || '{}');
+    } catch {
+        return {};
+    }
+}
+
+function eachUninitialized(root, attribute, callback) {
+    root.querySelectorAll(`[${attribute}]`).forEach((element) => {
+        if (element.adminInitialized) {
+            return;
+        }
+
+        element.adminInitialized = true;
+
+        try {
+            callback(element, readOptions(element, attribute));
+        } catch (error) {
+            console.error(`Failed to initialize [${attribute}].`, element, error);
+        }
+    });
+}
+
+const csrfToken = () => document.querySelector('meta[name="csrf-token"]')?.content;
+
+function initAdminComponents(root = document) {
+    if (window.DataTable) {
+        eachUninitialized(root, 'data-admin-datatable', (element, options) => new window.DataTable(element, options));
+    }
+
+    if ($.fn.select2) {
+        eachUninitialized(root, 'data-admin-select2', (element, options) => {
+            const modal = element.closest('.modal');
+
+            $(element).select2({
+                width: '100%',
+                dropdownParent: modal ? $(modal) : undefined,
+                ...options,
+            });
+        });
+    }
+
+    if (window.TomSelect) {
+        eachUninitialized(root, 'data-admin-tomselect', (element, options) => new window.TomSelect(element, options));
+    }
+
+    if (window.flatpickr) {
+        eachUninitialized(root, 'data-admin-flatpickr', (element, options) => window.flatpickr(element, options));
+    }
+
+    if (window.Inputmask) {
+        eachUninitialized(root, 'data-admin-inputmask', (element, options) => window.Inputmask(options).mask(element));
+    }
+
+    if (window.Dropzone) {
+        eachUninitialized(root, 'data-admin-dropzone', (element, { field, ...options }) => {
+            const dropzone = new window.Dropzone(element, {
+                headers: { 'X-CSRF-TOKEN': csrfToken() },
+                ...options,
+            });
+            const form = element.closest('form');
+
+            // Keep a hidden input with the stored path of every uploaded file.
+            dropzone.on('success', (file, response) => {
+                if (!form || !field || !response?.path) {
+                    return;
+                }
+
+                file.adminInput = Object.assign(document.createElement('input'), {
+                    type: 'hidden',
+                    name: field,
+                    value: response.path,
+                });
+                form.appendChild(file.adminInput);
+            });
+
+            dropzone.on('removedfile', (file) => file.adminInput?.remove());
+        });
+    }
+
+    // Live value next to range and color inputs.
+    eachUninitialized(root, 'data-admin-output', (element) => {
+        const output = document.querySelector(element.getAttribute('data-admin-output'));
+        const update = () => {
+            if (output) {
+                output.textContent = element.value;
+            }
+        };
+
+        element.addEventListener('input', update);
+        update();
+    });
+
+    eachUninitialized(root, 'data-admin-toast-autoshow', (element) => bootstrap.Toast.getOrCreateInstance(element).show());
+
+    // Notification counters that refresh from a JSON endpoint: {"count": 3}.
+    eachUninitialized(root, 'data-admin-notification', (element, { url, period = 60 }) => {
+        const refresh = async () => {
+            try {
+                const response = await fetch(url, { headers: { Accept: 'application/json' } });
+                const { count = 0 } = await response.json();
+
+                element.querySelectorAll('[data-admin-notification-count]').forEach((badge) => {
+                    badge.textContent = count;
+                    badge.classList.toggle('d-none', !count);
+                });
+                element.querySelectorAll('[data-admin-notification-count-text]').forEach((text) => {
+                    text.textContent = count;
+                });
+            } catch (error) {
+                console.error('Failed to refresh notifications.', error);
+            }
+        };
+
+        refresh();
+        setInterval(refresh, Math.max(10, period) * 1000);
+    });
+}
+
+window.adminInitComponents = initAdminComponents;
+
+adminReady.then(() => initAdminComponents());
+
+// Buttons with data-admin-toast="#toast-id" show that toast.
+document.addEventListener('click', (event) => {
+    const trigger = event.target.closest('[data-admin-toast]');
+    const toast = trigger && document.querySelector(trigger.getAttribute('data-admin-toast'));
+
+    if (toast) {
+        bootstrap.Toast.getOrCreateInstance(toast).show();
+    }
+});
 
 // Callbacks queued by page scripts before this module ran (see layouts/partials/plugins.blade.php).
 window.adminReady = function (callback) {

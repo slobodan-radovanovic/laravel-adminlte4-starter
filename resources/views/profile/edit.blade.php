@@ -3,22 +3,7 @@
 @section('title', 'Profile')
 
 @section('content_header')
-    <div class="row">
-        <div class="col-sm-6">
-            <h1 class="mb-0">Profile</h1>
-        </div>
-
-        <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-end">
-                <li class="breadcrumb-item">
-                    <a href="{{ route('dashboard') }}">Home</a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">
-                    Profile
-                </li>
-            </ol>
-        </div>
-    </div>
+    <x-admin.content-header title="Profile" />
 @endsection
 
 @section('content')

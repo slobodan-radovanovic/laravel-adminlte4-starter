@@ -3,22 +3,7 @@
 @section('title', 'Users')
 
 @section('content_header')
-    <div class="row">
-        <div class="col-sm-6">
-            <h1 class="mb-0">Users</h1>
-        </div>
-
-        <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-end">
-                <li class="breadcrumb-item">
-                    <a href="{{ route('dashboard') }}">Home</a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">
-                    Users
-                </li>
-            </ol>
-        </div>
-    </div>
+    <x-admin.content-header title="Users" />
 @endsection
 
 @section('content')
@@ -44,19 +29,7 @@
                 action-text="Create User"
             />
         @else
-        <table id="users-table" class="table table-bordered table-striped align-middle">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Roles</th>
-                <th>Verified</th>
-                <th>Created</th>
-                <th class="text-end">Actions</th>
-            </tr>
-            </thead>
-
-            <tbody>
+        <x-admin.datatable id="users-table" :heads="['Name', 'Email', 'Roles', 'Verified', 'Created', ['label' => 'Actions', 'class' => 'text-end', 'sortable' => false]]">
             @foreach ($users as $user)
                 <tr>
                     <td>
@@ -112,22 +85,7 @@
                     </td>
                 </tr>
             @endforeach
-            </tbody>
-        </table>
+        </x-admin.datatable>
         @endif
     </x-admin.card>
 @endsection
-
-@push('plugins')
-    datatables
-@endpush
-
-@push('scripts')
-    <script>
-        window.adminReady(function () {
-            if (window.adminPluginEnabled('datatables')) {
-                new DataTable('#users-table');
-            }
-        });
-    </script>
-@endpush

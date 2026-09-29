@@ -89,7 +89,7 @@ return [
         'enabled' => true,
         'text' => 'AdminLTE 4 Starter',
         'url' => 'https://github.com/slobodan-radovanovic/laravel-adminlte4-starter',
-        'version' => '2.3.1',
+        'version' => '2.4.0',
     ],
 
     /*
@@ -128,6 +128,14 @@ return [
         ],
 
         'dropzone' => [
+            'enabled' => false,
+        ],
+
+        'tomselect' => [
+            'enabled' => false,
+        ],
+
+        'trix' => [
             'enabled' => false,
         ],
     ],

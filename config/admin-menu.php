@@ -78,6 +78,33 @@ return [
         ],
 
         [
+            'text' => 'Components',
+            'icon' => 'bi bi-grid-1x2',
+            'can' => 'view users',
+            'active' => ['examples.components.*'],
+            'submenu' => [
+                [
+                    'text' => 'Forms',
+                    'route' => 'examples.components.forms',
+                    'icon' => 'bi bi-ui-checks',
+                    'active' => ['examples.components.forms*'],
+                ],
+                [
+                    'text' => 'Widgets',
+                    'route' => 'examples.components.widgets',
+                    'icon' => 'bi bi-window-stack',
+                    'active' => ['examples.components.widgets'],
+                ],
+                [
+                    'text' => 'Layout & Tools',
+                    'route' => 'examples.components.layout',
+                    'icon' => 'bi bi-layout-text-window',
+                    'active' => ['examples.components.layout'],
+                ],
+            ],
+        ],
+
+        [
             'text' => 'AdminLTE Docs',
             'url' => 'https://adminlte.io/docs/4.0/',
             'icon' => 'bi bi-book',

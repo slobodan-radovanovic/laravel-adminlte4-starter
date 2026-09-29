@@ -7,29 +7,23 @@
     'required' => false,
     'autofocus' => false,
     'help' => null,
+    'prepend' => null,
+    'append' => null,
 ])
 
+{{-- Text-like input. "prepend" and "append" (text or <x-slot:prepend> with an icon) add input-group addons. --}}
 @php
     $id = $attributes->get('id', $name);
-    $errorName = str_replace(['[', ']'], ['.', ''], $name);
+    $errorName = trim(str_replace(['[', ']'], ['.', ''], $name), '.');
 @endphp
 
-<div class="mb-3">
-    @if ($label)
-        <label for="{{ $id }}" class="form-label">
-            {{ $label }}
-
-            @if ($required)
-                <span class="text-danger">*</span>
-            @endif
-        </label>
-    @endif
-
+<x-admin.form._field :id="$id" :name="$name" :label="$label" :required="$required" :help="$help" :error-name="$errorName"
+                     :prepend="$prepend" :append="$append">
     <input
         id="{{ $id }}"
         name="{{ $name }}"
         type="{{ $type }}"
-        value="{{ old($errorName, $value) }}"
+        value="{{ $type === 'password' ? '' : old($errorName, $value) }}"
         placeholder="{{ $placeholder }}"
         @required($required)
         @autofocus($autofocus)
@@ -37,12 +31,4 @@
             'class' => 'form-control' . ($errors->has($errorName) ? ' is-invalid' : ''),
         ]) }}
     >
-
-    @if ($help)
-        <div class="form-text">{{ $help }}</div>
-    @endif
-
-    @error($errorName)
-    <div class="invalid-feedback">{{ $message }}</div>
-    @enderror
-</div>
+</x-admin.form._field>
