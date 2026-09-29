@@ -43,6 +43,7 @@ class ComponentExampleController extends Controller
             'attachments' => ['nullable', 'array'],
             'attachments.*' => ['string'],
             'content' => ['nullable', 'string'],
+            'article' => ['nullable', 'string'],
         ]);
 
         // Uploaded files are not kept; show their names instead.

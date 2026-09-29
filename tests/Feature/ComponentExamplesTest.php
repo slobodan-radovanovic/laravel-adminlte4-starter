@@ -35,8 +35,10 @@ class ComponentExamplesTest extends TestCase
             ->assertSee('data-admin-tomselect', false)
             ->assertSee('data-admin-flatpickr', false)
             ->assertSee('data-admin-dropzone', false)
-            ->assertSee('<trix-editor', false)
-            ->assertSee('window.AdminPlugins = ["select2","tomselect","flatpickr","dropzone","trix"]', false);
+            ->assertSee('data-admin-quill', false)
+            ->assertSee('data-admin-tinymce', false)
+            ->assertSee('&quot;license_key&quot;:&quot;gpl&quot;', false)
+            ->assertSee('window.AdminPlugins = ["select2","tomselect","flatpickr","dropzone","quill","tinymce"]', false);
 
         $this->actingAs($admin)
             ->get(route('examples.components.widgets'))
@@ -87,7 +89,8 @@ class ComponentExamplesTest extends TestCase
                 'newsletter' => '1',
                 'accent' => '#6f42c1',
                 'volume' => '40',
-                'content' => '<div>Hello</div>',
+                'content' => '<p>Hello</p>',
+                'article' => '<p>Article</p>',
             ])
             ->assertRedirect(route('examples.components.forms'))
             ->assertSessionHas('submitted.languages', ['php', 'js'])

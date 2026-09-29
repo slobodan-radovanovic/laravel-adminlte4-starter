@@ -62,26 +62,45 @@
   }
 }
 
-
-
-/* Trix editor toolbar in dark mode. */
-[data-bs-theme="dark"] trix-toolbar .trix-button-group,
-[data-bs-theme="dark"] trix-toolbar .trix-button {
+/* Quill editor: match Bootstrap form controls, including dark mode. */
+.admin-quill .ql-toolbar.ql-snow,
+.admin-quill .ql-container.ql-snow {
   border-color: var(--bs-border-color);
 }
 
-[data-bs-theme="dark"] trix-toolbar .trix-button {
-  background-color: var(--bs-secondary-bg);
+.admin-quill .ql-toolbar.ql-snow {
+  border-top-left-radius: var(--bs-border-radius);
+  border-top-right-radius: var(--bs-border-radius);
+  background-color: var(--bs-tertiary-bg);
 }
 
-[data-bs-theme="dark"] trix-toolbar .trix-button--icon::before {
-  filter: invert(1);
+.admin-quill .ql-container.ql-snow {
+  border-bottom-left-radius: var(--bs-border-radius);
+  border-bottom-right-radius: var(--bs-border-radius);
+  font-size: 1rem;
+  color: var(--bs-body-color);
+  background-color: var(--bs-body-bg);
 }
 
-[data-bs-theme="dark"] trix-toolbar .trix-button.trix-active {
-  background-color: var(--bs-primary-bg-subtle);
+.admin-quill .ql-editor.ql-blank::before {
+  color: var(--bs-secondary-color);
 }
 
-trix-editor.form-control {
-  min-height: 8rem;
+.admin-quill.is-invalid .ql-toolbar.ql-snow,
+.admin-quill.is-invalid .ql-container.ql-snow {
+  border-color: var(--bs-form-invalid-border-color);
+}
+
+[data-bs-theme="dark"] .admin-quill .ql-snow .ql-stroke {
+  stroke: var(--bs-body-color);
+}
+
+[data-bs-theme="dark"] .admin-quill .ql-snow .ql-fill {
+  fill: var(--bs-body-color);
+}
+
+[data-bs-theme="dark"] .admin-quill .ql-snow .ql-picker,
+[data-bs-theme="dark"] .admin-quill .ql-snow .ql-picker-options {
+  color: var(--bs-body-color);
+  background-color: var(--bs-tertiary-bg);
 }

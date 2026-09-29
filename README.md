@@ -25,7 +25,7 @@ It provides authentication, a Bootstrap/AdminLTE layout, role and permission man
 - Users CRUD
 - Roles CRUD
 - Categories CRUD example
-- 44 AdminLTE Blade components with working examples
+- 45 AdminLTE Blade components with working examples
 - Reusable feedback components
 - Centered flash popup for success, error, warning and info messages
 - Admin plugin system
@@ -57,7 +57,8 @@ Frontend plugins included:
 - SortableJS
 - Dropzone
 - Tom Select
-- Trix editor
+- Quill editor
+- TinyMCE editor (optional, GPL-2.0-or-later)
 
 ---
 
@@ -379,7 +380,7 @@ Example:
 
 ## Blade Components
 
-The starter ships 44 AdminLTE Blade components in `resources/views/components/admin`, covering the same ground as the component set of [Laravel-AdminLTE](https://github.com/jeroennoten/Laravel-AdminLTE). They are plain anonymous Blade components, so you can open and change any of them.
+The starter ships 45 AdminLTE Blade components in `resources/views/components/admin`: the same set as [Laravel-AdminLTE](https://github.com/jeroennoten/Laravel-AdminLTE), plus a TinyMCE editor. They are plain anonymous Blade components, so you can open and change any of them.
 
 Working examples of every component are in the sidebar under **Examples → Components**:
 
@@ -389,7 +390,7 @@ Working examples of every component are in the sidebar under **Examples → Comp
 
 | Group | Components |
 |---|---|
-| Forms (15) | `form.input`, `form.textarea`, `form.select`, `form.options`, `form.select2`, `form.select-tom`, `form.input-date`, `form.date-range`, `form.input-switch`, `form.input-color`, `form.input-slider`, `form.input-file`, `form.input-file-drop`, `form.text-editor`, `form.button` |
+| Forms (16) | `form.input`, `form.textarea`, `form.select`, `form.options`, `form.select2`, `form.select-tom`, `form.input-date`, `form.date-range`, `form.input-switch`, `form.input-color`, `form.input-slider`, `form.input-file`, `form.input-file-drop`, `form.text-editor`, `form.text-editor-tinymce`, `form.button` |
 | Layout (6) | `content-header`, `navbar.custom-menu`, `navbar.dropdown`, `navbar.dropdown-item`, `navbar.notification`, `navbar.color-mode` |
 | Tools (2) | `datatable`, `modal` |
 | Widgets (21) | `alert`, `callout`, `card`, `info-box`, `small-box`, `progress`, `progress-group`, `ribbon`, `toast`, `timeline`, `timeline-label`, `timeline-item`, `direct-chat`, `direct-chat-msg`, `direct-chat-contact`, `profile-widget`, `profile-item`, `profile-col-item`, `profile-row-item`, `user-block`, `post` |
@@ -414,7 +415,15 @@ Plugin options go in the `config` attribute (for example `:config="['pageLength'
 
 Form components show validation errors and keep old input automatically. Names with brackets (`tags[]`) work for multiple values.
 
-`form.select-tom` uses Tom Select (no jQuery, supports creating new options). `form.input-file-drop` uploads each file with Dropzone to your endpoint as soon as it is dropped; the endpoint returns `{"path": "..."}` and the path is submitted with the form. `form.text-editor` uses Trix. Always sanitize its HTML before you display it.
+`form.select-tom` uses Tom Select (no jQuery, supports creating new options). `form.input-file-drop` uploads each file with Dropzone to your endpoint as soon as it is dropped; the endpoint returns `{"path": "..."}` and the path is submitted with the form. `form.text-editor` uses Quill, a light editor for everyday text. `form.text-editor-tinymce` uses TinyMCE for full documents (tables, images, code view). Always sanitize the HTML from both editors before you display it, for example with an HTML purifier.
+
+TinyMCE 7 and newer is licensed under **GPL-2.0-or-later**, unlike the rest of the starter (MIT). It is only bundled into pages that use the TinyMCE component. For closed-source software that you distribute, buy a commercial license and set its key in `.env`:
+
+```env
+TINYMCE_LICENSE_KEY=your-commercial-key
+```
+
+Quill 2.0.3 has a low-severity advisory (GHSA-v3m3-f69x-jf25) for its HTML export function. The starter does not use that function; it reads the editor HTML directly, and you should sanitize it on the server anyway.
 
 ---
 

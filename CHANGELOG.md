@@ -10,10 +10,10 @@ This project follows a simple versioned release history for the Laravel AdminLTE
 
 ### Added
 
-- 44 AdminLTE Blade components, matching the component set of Laravel-AdminLTE: 15 form components, 6 layout and navbar components, datatable and modal, and 21 widgets.
+- 45 AdminLTE Blade components: the component set of Laravel-AdminLTE (15 form components, 6 layout and navbar components, datatable and modal, and 21 widgets) plus a TinyMCE editor.
 - Example pages under Examples → Components (Forms, Widgets, Layout and Tools). The forms page really submits, validates and uploads files.
 - Components start their plugins automatically through `data-admin-*` attributes; `window.adminInitComponents(element)` starts plugins in HTML added later.
-- Tom Select and Trix editor as lazy-loaded plugins (`tomselect`, `trix`).
+- Tom Select, Quill and TinyMCE as lazy-loaded plugins (`tomselect`, `quill`, `tinymce`). TinyMCE is GPL-2.0-or-later; set `TINYMCE_LICENSE_KEY` for a commercial license.
 - `form.select` supports `multiple`, grouped options and a custom options slot; `form.input` supports `prepend` and `append` addons.
 - `card` supports themes and the AdminLTE collapse, maximize and remove tools; `info-box` supports progress and a filled style.
 

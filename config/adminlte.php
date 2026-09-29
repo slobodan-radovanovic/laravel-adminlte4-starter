@@ -135,8 +135,14 @@ return [
             'enabled' => false,
         ],
 
-        'trix' => [
+        'quill' => [
             'enabled' => false,
+        ],
+
+        // TinyMCE 7+ is GPL-2.0-or-later unless you have a commercial license key.
+        'tinymce' => [
+            'enabled' => false,
+            'license_key' => env('TINYMCE_LICENSE_KEY', 'gpl'),
         ],
     ],
 
