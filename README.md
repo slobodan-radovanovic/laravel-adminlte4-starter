@@ -79,7 +79,7 @@ AdminLTE is integrated manually so the project structure stays transparent and e
 
 - PHP 8.3 or newer
 - Composer
-- Node.js and npm
+- Node.js 22 or newer and npm
 - MySQL or MariaDB
 
 ---
