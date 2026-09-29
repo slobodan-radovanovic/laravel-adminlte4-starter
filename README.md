@@ -25,7 +25,8 @@ It provides authentication, a Bootstrap/AdminLTE layout, role and permission man
 - Users CRUD
 - Roles CRUD
 - Categories CRUD example
-- 45 AdminLTE Blade components with working examples
+- 46 AdminLTE Blade components with working examples
+- File manager (Laravel Filemanager) with a file picker and editor integration
 - Reusable feedback components
 - Centered flash popup for success, error, warning and info messages
 - Admin plugin system
@@ -80,7 +81,7 @@ AdminLTE is integrated manually so the project structure stays transparent and e
 
 ## Requirements
 
-- PHP 8.3 or newer
+- PHP 8.3 or newer with the exif, fileinfo and gd extensions
 - Composer
 - Node.js 22 or newer and npm
 - MySQL or MariaDB
@@ -319,7 +320,7 @@ The footer is configured in `config/adminlte.php`:
     'enabled' => true,
     'text' => 'AdminLTE 4 Starter',
     'url' => 'https://github.com/slobodan-radovanovic/laravel-adminlte4-starter',
-    'version' => '2.4.0',
+    'version' => '2.5.0',
 ],
 ```
 
@@ -380,7 +381,7 @@ Example:
 
 ## Blade Components
 
-The starter ships 45 AdminLTE Blade components in `resources/views/components/admin`: the same set as [Laravel-AdminLTE](https://github.com/jeroennoten/Laravel-AdminLTE), plus a TinyMCE editor. They are plain anonymous Blade components, so you can open and change any of them.
+The starter ships 46 AdminLTE Blade components in `resources/views/components/admin`: the same set as [Laravel-AdminLTE](https://github.com/jeroennoten/Laravel-AdminLTE), plus a TinyMCE editor and a file picker for the file manager. They are plain anonymous Blade components, so you can open and change any of them.
 
 Working examples of every component are in the sidebar under **Examples → Components**:
 
@@ -390,7 +391,7 @@ Working examples of every component are in the sidebar under **Examples → Comp
 
 | Group | Components |
 |---|---|
-| Forms (16) | `form.input`, `form.textarea`, `form.select`, `form.options`, `form.select2`, `form.select-tom`, `form.input-date`, `form.date-range`, `form.input-switch`, `form.input-color`, `form.input-slider`, `form.input-file`, `form.input-file-drop`, `form.text-editor`, `form.text-editor-tinymce`, `form.button` |
+| Forms (17) | `form.input`, `form.textarea`, `form.select`, `form.options`, `form.select2`, `form.select-tom`, `form.input-date`, `form.date-range`, `form.input-switch`, `form.input-color`, `form.input-slider`, `form.input-file`, `form.input-file-drop`, `form.text-editor`, `form.text-editor-tinymce`, `form.file-picker`, `form.button` |
 | Layout (6) | `content-header`, `navbar.custom-menu`, `navbar.dropdown`, `navbar.dropdown-item`, `navbar.notification`, `navbar.color-mode` |
 | Tools (2) | `datatable`, `modal` |
 | Widgets (21) | `alert`, `callout`, `card`, `info-box`, `small-box`, `progress`, `progress-group`, `ribbon`, `toast`, `timeline`, `timeline-label`, `timeline-item`, `direct-chat`, `direct-chat-msg`, `direct-chat-contact`, `profile-widget`, `profile-item`, `profile-col-item`, `profile-row-item`, `user-block`, `post` |
@@ -424,6 +425,27 @@ TINYMCE_LICENSE_KEY=your-commercial-key
 ```
 
 Quill 2.0.3 has a low-severity advisory (GHSA-v3m3-f69x-jf25) for its HTML export function. The starter does not use that function; it reads the editor HTML directly, and you should sanitize it on the server anyway.
+
+---
+
+## File Manager
+
+The starter includes [Laravel Filemanager](https://github.com/UniSharp/laravel-filemanager) (UniSharp) for uploading and choosing images and files. Users need the `use filemanager` permission; Super Admin and Admin have it.
+
+- **File Manager** in the sidebar opens it as a page (`/file-manager`).
+- `<x-admin.form.file-picker name="cover" type="image" />` adds a field with a **Browse** button that opens it in a modal and shows a preview.
+- The **Browse** button in TinyMCE's image and link dialogs and Quill's image button pick files from it.
+- From your own JavaScript: `window.adminOpenFileManager({ type: 'image', onSelect: (items) => ... })`.
+
+Every user gets a private folder, and there is one shared folder. Files are stored on the `public` disk, so the storage link is required (`composer setup` creates it):
+
+```bash
+php artisan storage:link
+```
+
+Settings are in `config/lfm.php`. The starter registers the routes itself (in `routes/web.php`, behind `auth`, `verified` and the permission), limits uploads to 10 MB, blocks SVG, HTML and script files, and only allows the file manager's delete, rename and move actions as AJAX requests from its own interface.
+
+The file manager has its own Bootstrap 4 interface, which loads jQuery 3.2.1, Bootstrap 4.1 and jQuery UI from the jsDelivr CDN and does not follow the dark theme. To change that, publish its views with `php artisan vendor:publish --tag=lfm_view`.
 
 ---
 
@@ -577,6 +599,17 @@ npm run build
 ```
 
 Merge the update branch into `main` when everything passes. Merge releases in order where possible (for example `v2.2.0` before `v2.3.0`), so each upgrade note is applied once.
+
+### Upgrading to v2.5
+
+v2.5 adds a permission and needs the storage link and the file manager's assets:
+
+```bash
+composer install
+php artisan db:seed --class=RolePermissionSeeder
+php artisan storage:link
+php artisan vendor:publish --tag=lfm_public --force
+```
 
 ### Upgrading from v2.1 or older to v2.2
 

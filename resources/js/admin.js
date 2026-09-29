@@ -178,6 +178,95 @@ const csrfToken = () => document.querySelector('meta[name="csrf-token"]')?.conte
 
 const isDarkMode = () => document.documentElement.getAttribute('data-bs-theme') === 'dark';
 
+/*
+ * Laravel Filemanager (UniSharp). The layout sets <meta name="admin-file-manager"> for users
+ * with the "use filemanager" permission. window.adminOpenFileManager({ type, onSelect }) opens
+ * it in a modal; onSelect receives the chosen items ({ url, name, thumb_url, ... }).
+ */
+const fileManagerUrl = () => document.querySelector('meta[name="admin-file-manager"]')?.content;
+
+function fileManagerLink(type, params = {}) {
+    const url = new URL(fileManagerUrl(), window.location.origin);
+
+    url.searchParams.set('type', type);
+    Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, value));
+
+    return url.toString();
+}
+
+function openFileManager({ type = 'file', onSelect }) {
+    if (!fileManagerUrl()) {
+        return;
+    }
+
+    let modal = document.getElementById('admin-file-manager-modal');
+
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'admin-file-manager-modal';
+        modal.className = 'modal fade';
+        modal.tabIndex = -1;
+        modal.setAttribute('aria-label', 'File manager');
+        modal.innerHTML = `
+            <div class="modal-dialog modal-xl modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"><i class="bi bi-folder2-open me-1"></i>File manager</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-0">
+                        <iframe title="File manager" class="d-block w-100 border-0" style="height: 70vh"></iframe>
+                    </div>
+                </div>
+            </div>`;
+        document.body.appendChild(modal);
+    }
+
+    const instance = bootstrap.Modal.getOrCreateInstance(modal);
+
+    // The file manager calls parent[callback](items) when a file is chosen.
+    window.adminFileManagerSelect = (items) => {
+        onSelect?.(items);
+        instance.hide();
+    };
+
+    modal.querySelector('iframe').src = fileManagerLink(type, { callback: 'adminFileManagerSelect' });
+    instance.show();
+}
+
+window.adminOpenFileManager = openFileManager;
+
+// <x-admin.form.file-picker> buttons.
+document.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-admin-file-picker]');
+
+    if (!button) {
+        return;
+    }
+
+    const { type, input, preview } = readOptions(button, 'data-admin-file-picker');
+
+    openFileManager({
+        type,
+        onSelect: (items) => {
+            const field = document.querySelector(input);
+            const previewElement = preview && document.querySelector(preview);
+
+            field.value = items.map((item) => item.url).join(',');
+            field.dispatchEvent(new Event('change', { bubbles: true }));
+
+            if (previewElement && type === 'image') {
+                previewElement.replaceChildren(...items.map((item) => Object.assign(document.createElement('img'), {
+                    src: item.thumb_url || item.url,
+                    alt: item.name || '',
+                    className: 'img-thumbnail',
+                    style: 'height: 5rem',
+                })));
+            }
+        },
+    });
+});
+
 function initTinymce(element, options) {
     element.adminTinymceOptions = options;
 
@@ -190,6 +279,16 @@ function initTinymce(element, options) {
         promotion: false,
         plugins: 'advlist autolink code fullscreen image link lists table wordcount',
         toolbar: 'undo redo | blocks | bold italic underline | bullist numlist | link image table | code fullscreen',
+        // "Browse" buttons in the image and link dialogs open Laravel Filemanager.
+        file_picker_callback: fileManagerUrl()
+            ? (callback, value, meta) => window.tinymce.activeEditor.windowManager.openUrl({
+                title: 'File manager',
+                url: fileManagerLink(meta.filetype === 'image' ? 'image' : 'file', { editor: meta.fieldname }),
+                width: Math.round(window.innerWidth * 0.8),
+                height: Math.round(window.innerHeight * 0.8),
+                onMessage: (api, message) => callback(message.content),
+            })
+            : undefined,
         ...options,
     });
 }
@@ -265,6 +364,19 @@ function initAdminComponents(root = document) {
             const field = document.querySelector(input);
             const quill = new window.Quill(element, { theme: 'snow', ...options });
 
+            // With access to the file manager, the image button picks an image from it.
+            if (fileManagerUrl()) {
+                quill.getModule('toolbar')?.addHandler('image', () => openFileManager({
+                    type: 'image',
+                    onSelect: ([item]) => {
+                        const range = quill.getSelection(true);
+
+                        quill.insertEmbed(range.index, 'image', item.url, 'user');
+                        quill.setSelection(range.index + 1, 0);
+                    },
+                }));
+            }
+
             // Load the saved HTML through Quill's clipboard, which turns it into editor content.
             if (field?.value) {
                 quill.setContents(quill.clipboard.convert({ html: field.value }), 'silent');
@@ -272,7 +384,10 @@ function initAdminComponents(root = document) {
 
             quill.on('text-change', () => {
                 if (field) {
-                    field.value = quill.getText().trim() === '' ? '' : quill.root.innerHTML;
+                    const html = quill.root.innerHTML;
+
+                    // An empty editor still contains an empty paragraph; submit it as an empty value.
+                    field.value = html === '<p><br></p>' ? '' : html;
                 }
             });
         });

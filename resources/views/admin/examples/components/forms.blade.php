@@ -89,6 +89,8 @@
                 </x-admin.card>
 
                 <x-admin.card title="Files and rich text" icon="bi bi-file-earmark-richtext">
+                    <x-admin.form.file-picker name="cover" label="Cover image (Laravel Filemanager)" help="Opens the file manager; pick one or more images." />
+
                     <x-admin.form.input-file name="avatar" label="Avatar (native file input)" accept="image/*" help="Image up to 2 MB" />
 
                     <x-admin.form.input-file-drop
