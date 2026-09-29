@@ -100,7 +100,16 @@
                         help="Up to 3 images or PDFs, 5 MB each. Files upload immediately; their paths are submitted with the form."
                     />
 
-                    <x-admin.form.text-editor name="content" label="Content (Trix editor)" placeholder="Write something..." />
+                    <x-admin.form.text-editor name="content" label="Content (Quill editor)" placeholder="Write something..." />
+                </x-admin.card>
+
+                <x-admin.card title="TinyMCE" icon="bi bi-file-earmark-word">
+                    <x-admin.form.text-editor-tinymce
+                        name="article"
+                        label="Article (TinyMCE)"
+                        :value="'<p>TinyMCE is <strong>loaded only on this page</strong>. Try tables, links and the code view.</p>'"
+                        help="Self-hosted TinyMCE, GPL-2.0-or-later. Set TINYMCE_LICENSE_KEY for a commercial license."
+                    />
                 </x-admin.card>
             </div>
         </div>

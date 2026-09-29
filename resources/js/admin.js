@@ -83,12 +83,41 @@ const pluginLoaders = {
         window.TomSelect = TomSelect;
     },
 
-    trix: async () => {
-        // Registers the <trix-editor> element.
-        await Promise.all([
-            import('trix'),
-            import('trix/dist/trix.css'),
+    quill: async () => {
+        const [{ default: Quill }] = await Promise.all([
+            import('quill'),
+            import('quill/dist/quill.snow.css'),
         ]);
+
+        window.Quill = Quill;
+    },
+
+    tinymce: async () => {
+        const { default: tinymce } = await import('tinymce');
+
+        // TinyMCE loads these by URL by default; importing them bundles everything with Vite.
+        await Promise.all([
+            import('tinymce/models/dom'),
+            import('tinymce/themes/silver'),
+            import('tinymce/icons/default'),
+            import('tinymce/skins/ui/oxide/skin.js'),
+            import('tinymce/skins/ui/oxide/content.js'),
+            import('tinymce/skins/ui/oxide-dark/skin.js'),
+            import('tinymce/skins/ui/oxide-dark/content.js'),
+            import('tinymce/skins/content/default/content.js'),
+            import('tinymce/skins/content/dark/content.js'),
+            import('tinymce/plugins/advlist'),
+            import('tinymce/plugins/autolink'),
+            import('tinymce/plugins/code'),
+            import('tinymce/plugins/fullscreen'),
+            import('tinymce/plugins/image'),
+            import('tinymce/plugins/link'),
+            import('tinymce/plugins/lists'),
+            import('tinymce/plugins/table'),
+            import('tinymce/plugins/wordcount'),
+        ]);
+
+        window.tinymce = tinymce;
     },
 };
 
@@ -147,6 +176,35 @@ function eachUninitialized(root, attribute, callback) {
 
 const csrfToken = () => document.querySelector('meta[name="csrf-token"]')?.content;
 
+const isDarkMode = () => document.documentElement.getAttribute('data-bs-theme') === 'dark';
+
+function initTinymce(element, options) {
+    element.adminTinymceOptions = options;
+
+    return window.tinymce.init({
+        target: element,
+        skin: isDarkMode() ? 'oxide-dark' : 'oxide',
+        content_css: isDarkMode() ? 'dark' : 'default',
+        menubar: false,
+        branding: false,
+        promotion: false,
+        plugins: 'advlist autolink code fullscreen image link lists table wordcount',
+        toolbar: 'undo redo | blocks | bold italic underline | bullist numlist | link image table | code fullscreen',
+        ...options,
+    });
+}
+
+// TinyMCE cannot switch skins on the fly, so editors are recreated when the color mode changes.
+new MutationObserver(() => {
+    window.tinymce?.get().forEach((editor) => {
+        const element = editor.getElement();
+
+        editor.save();
+        editor.remove();
+        initTinymce(element, element.adminTinymceOptions);
+    });
+}).observe(document.documentElement, { attributes: true, attributeFilter: ['data-bs-theme'] });
+
 function initAdminComponents(root = document) {
     if (window.DataTable) {
         eachUninitialized(root, 'data-admin-datatable', (element, options) => new window.DataTable(element, options));
@@ -200,6 +258,28 @@ function initAdminComponents(root = document) {
 
             dropzone.on('removedfile', (file) => file.adminInput?.remove());
         });
+    }
+
+    if (window.Quill) {
+        eachUninitialized(root, 'data-admin-quill', (element, { input, ...options }) => {
+            const field = document.querySelector(input);
+            const quill = new window.Quill(element, { theme: 'snow', ...options });
+
+            // Load the saved HTML through Quill's clipboard, which turns it into editor content.
+            if (field?.value) {
+                quill.setContents(quill.clipboard.convert({ html: field.value }), 'silent');
+            }
+
+            quill.on('text-change', () => {
+                if (field) {
+                    field.value = quill.getText().trim() === '' ? '' : quill.root.innerHTML;
+                }
+            });
+        });
+    }
+
+    if (window.tinymce) {
+        eachUninitialized(root, 'data-admin-tinymce', (element, options) => initTinymce(element, options));
     }
 
     // Live value next to range and color inputs.
