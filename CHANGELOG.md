@@ -6,6 +6,16 @@ This project follows a simple versioned release history for the Laravel AdminLTE
 
 ---
 
+## v2.3.1 - Footer Fixes
+
+### Fixed
+
+- The footer showed version 1.0.0; it now shows the starter release, and a test keeps it in sync with this changelog.
+- The copyright link pointed to the dashboard; it now uses `adminlte.footer.url` (the starter's GitHub repository by default, `null` for plain text).
+- `adminlte.footer.enabled` had no effect; setting it to `false` now hides the footer.
+
+---
+
 ## v2.3.0 - Built-in Color Modes
 
 ### Added

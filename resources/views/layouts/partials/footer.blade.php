@@ -9,9 +9,13 @@
 
     <strong>
         Copyright &copy; {{ date('Y') }}
-        <a href="{{ route('dashboard') }}" class="text-decoration-none">
-            {{ config('adminlte.name', config('app.name', 'Laravel')) }}
-        </a>.
+        @if ($footerUrl = config('adminlte.footer.url'))
+            <a href="{{ $footerUrl }}" class="text-decoration-none" target="_blank" rel="noopener">
+                {{ config('adminlte.name', config('app.name', 'Laravel')) }}
+            </a>.
+        @else
+            {{ config('adminlte.name', config('app.name', 'Laravel')) }}.
+        @endif
     </strong>
 
     All rights reserved.

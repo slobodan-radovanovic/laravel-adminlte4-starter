@@ -307,6 +307,23 @@ With a single available mode the menu is hidden. The user's choice is stored in 
 
 ---
 
+## Footer
+
+The footer is configured in `config/adminlte.php`:
+
+```php
+'footer' => [
+    'enabled' => true,
+    'text' => 'AdminLTE 4 Starter',
+    'url' => 'https://github.com/slobodan-radovanovic/laravel-adminlte4-starter',
+    'version' => '2.3.1',
+],
+```
+
+In your project, set `text`, `url` and `version` to your own application. Set `url` to `null` for a copyright line without a link.
+
+---
+
 ## Sidebar Menu
 
 The sidebar menu is configured in the `items` key of:
