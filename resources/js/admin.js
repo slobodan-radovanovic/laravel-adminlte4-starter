@@ -51,7 +51,7 @@ const pluginLoaders = {
     },
 
     inputmask: async () => {
-        const { default: Inputmask } = await import('inputmask/dist/inputmask.es6.js');
+        const { default: Inputmask } = await import('inputmask');
 
         window.Inputmask = Inputmask;
     },
