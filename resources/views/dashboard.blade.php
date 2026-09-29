@@ -119,7 +119,7 @@
                     <li>Laravel Breeze authentication</li>
                     <li>AdminLTE 4 layout</li>
                     <li>Config-driven sidebar menu</li>
-                    <li>Light/Dark theme switcher</li>
+                    <li>Light, dark and auto color modes</li>
                     <li>DataTables, Select2 and Chart.js examples</li>
                     <li>Reusable Blade widgets</li>
                 </ul>

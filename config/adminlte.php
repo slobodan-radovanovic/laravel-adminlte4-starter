@@ -78,12 +78,18 @@ return [
     |--------------------------------------------------------------------------
     | Footer Options
     |--------------------------------------------------------------------------
+    |
+    | 'url' is the target of the copyright link (null for plain text) and
+    | 'version' is shown next to 'text'. In your project, set them to your
+    | own website or repository and your application's version.
+    |
     */
 
     'footer' => [
         'enabled' => true,
         'text' => 'AdminLTE 4 Starter',
-        'version' => '1.0.0',
+        'url' => 'https://github.com/slobodan-radovanovic/laravel-adminlte4-starter',
+        'version' => '2.3.1',
     ],
 
     /*

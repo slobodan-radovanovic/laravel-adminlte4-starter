@@ -44,7 +44,9 @@
         </div>
     </main>
 
-    @include('layouts.partials.footer')
+    @if (config('adminlte.footer.enabled', true))
+        @include('layouts.partials.footer')
+    @endif
 
 </div>
 @include('layouts.partials.flash')
