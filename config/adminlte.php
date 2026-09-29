@@ -22,6 +22,11 @@ return [
     |--------------------------------------------------------------------------
     | Theme Options
     |--------------------------------------------------------------------------
+    |
+    | Color modes are handled by AdminLTE's built-in ColorMode. 'default' is
+    | used until a user picks a mode: light, dark or auto (follows the
+    | operating system). 'available' lists the modes offered in the navbar.
+    |
     */
 
     'theme' => [
@@ -29,6 +34,7 @@ return [
         'available' => [
             'light',
             'dark',
+            'auto',
         ],
     ],
 

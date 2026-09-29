@@ -6,6 +6,28 @@ This project follows a simple versioned release history for the Laravel AdminLTE
 
 ---
 
+## v2.3.0 - Built-in Color Modes
+
+### Added
+
+- Color mode menu in the navbar with Light, Dark and Auto. Auto follows the operating system.
+- `adminlte.theme.available` now controls which modes the menu offers.
+
+### Changed
+
+- The theme switch uses AdminLTE's built-in ColorMode instead of custom JavaScript.
+- The saved choice moved from the `admin-theme` to the `lte-theme` browser key. Existing choices are carried over automatically.
+- Updated to AdminLTE 4.9. Printing now hides the header, sidebar and footer; add `data-lte-print="app"` to restore the old behavior.
+- Inputmask is imported through its package entry point and requires 5.0.10 or newer.
+- Node.js 22 or newer is required.
+- Dependency updates from Dependabot: DataTables 3, concurrently 10, Vite 8.3, Dropzone 6.3 and GitHub Actions checkout and setup-node v7.
+
+### Removed
+
+- `#admin-theme-toggle` and `#admin-theme-icon` from the navbar. Custom code that used them should use `data-bs-theme-value` buttons instead.
+
+---
+
 ## v2.2.0 - Project-Friendly Updates
 
 ### Added
