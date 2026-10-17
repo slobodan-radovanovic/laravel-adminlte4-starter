@@ -10,18 +10,18 @@
         "dev": "vite"
     },
     "devDependencies": {
-        "concurrently": "^10.0.5",
+        "concurrently": "^10.0.6",
         "laravel-vite-plugin": "^3.2",
-        "vite": "^8.3.1"
+        "vite": "^8.3.4"
     },
     "dependencies": {
         "@popperjs/core": "^2.11.8",
-        "admin-lte": "4.9",
+        "admin-lte": "4.10",
         "bootstrap": "5.3",
-        "bootstrap-icons": "^1.13.1",
+        "bootstrap-icons": "^1.13.2",
         "chart.js": "^4.5.1",
-        "datatables.net-bs5": "^3.1.2",
-        "dropzone": "^6.3.4",
+        "datatables.net-bs5": "^3.1.4",
+        "dropzone": "^6.3.5",
         "flatpickr": "^4.6.13",
         "inputmask": "^5.0.10",
         "jquery": "^4.0.0",
@@ -29,7 +29,7 @@
         "select2": "^4.1.0",
         "sortablejs": "^1.15.7",
         "sweetalert2": "^11.26.25",
-        "tinymce": "^8.9.2",
+        "tinymce": "^8.10.0",
         "tom-select": "^2.6.2"
     }
 }
